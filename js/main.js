@@ -70,11 +70,19 @@ var buildObjects = function () {
   return array;
 };
 
-var removeClass = function (classParent, classChild) {
-  document.querySelector(classParent).classList.remove(classChild);
-};
-
-removeClass('.map', 'map--faded');
-
 document.querySelector('.map__pins')
     .appendChild(renderPins(findTemplate('#pin', '.map__pin'), buildObjects()));
+
+
+// module4-task1 //
+
+
+var disableElement = function (tag) {
+  var tagList = document.querySelectorAll(tag)
+  for (var i = 0; i < tagList.length; i++) {
+    tagList[i].disabled = true;
+  }
+};
+
+disableElement('fieldset');
+disableElement('select');

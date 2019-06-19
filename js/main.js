@@ -29,7 +29,8 @@ var findTemplate = function (classParent, classChild) {
 
 var loadPin = function (template, object) {
   var clone = template.cloneNode(true);
-  clone.style = 'left: ' + (object.location.x - Pin.width / 2) + 'px; top: ' + (object.location.y - Pin.height) + 'px';
+  clone.style.left = (object.location.x - Pin.width / 2) + 'px';
+  clone.style.top = (object.location.y - Pin.height) + 'px';
   clone.querySelector('img').src = object.author.avatar;
   clone.querySelector('img').alt = 'Заголовок объявления';
   return clone;
@@ -107,5 +108,8 @@ mapPin.addEventListener('click', function () {
   removeClass('.ad-form', 'ad-form--disabled');
 });
 
-var pinPoint = mapPin.getBoundingClientRect();
-inputAddress.value = Math.round(pinPoint.x - MainPin.width) + ', ' + Math.round(pinPoint.y + MainPin.height);
+var pinPoint = function (location) {
+  inputAddress.value = Math.round(location.x - MainPin.width) + ', ' + Math.round(location.y + MainPin.height);
+};
+
+pinPoint(mapPin.getBoundingClientRect());

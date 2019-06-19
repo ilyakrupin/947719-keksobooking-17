@@ -73,16 +73,30 @@ var buildObjects = function () {
 document.querySelector('.map__pins')
     .appendChild(renderPins(findTemplate('#pin', '.map__pin'), buildObjects()));
 
-
 // module4-task1 //
 
+var mapPin = document.querySelector('.map__pin--main');
 
-var disableElement = function (tag) {
-  var tagList = document.querySelectorAll(tag)
+var removeClass = function (classParent, classChild) {
+  document.querySelector(classParent).classList.remove(classChild);
+};
+
+var elementStatus = function (tag, status) {
+  var tagList = document.querySelectorAll(tag);
   for (var i = 0; i < tagList.length; i++) {
-    tagList[i].disabled = true;
+    tagList[i].disabled = status;
   }
 };
 
-disableElement('fieldset');
-disableElement('select');
+var disableElement = function (status) {
+  elementStatus('fieldset', status);
+  elementStatus('select', status);
+};
+
+disableElement(true);
+
+mapPin.addEventListener('click', function () {
+  disableElement(false);
+  removeClass('.map', 'map--faded');
+  removeClass('.ad-form', 'ad-form--disabled');
+});

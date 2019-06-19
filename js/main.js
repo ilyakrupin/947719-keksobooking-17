@@ -7,6 +7,11 @@ var Pin = {
   height: 70
 };
 
+var MainPin = {
+  width: 62 / 2,
+  height: 84
+};
+
 var Map = {
   x1: Pin.width,
   x2: document.querySelector('.map').offsetWidth - Pin.width,
@@ -76,6 +81,7 @@ document.querySelector('.map__pins')
 // module4-task1 //
 
 var mapPin = document.querySelector('.map__pin--main');
+var inputAddress = document.querySelector('input[name="address"]');
 
 var removeClass = function (classParent, classChild) {
   document.querySelector(classParent).classList.remove(classChild);
@@ -100,3 +106,6 @@ mapPin.addEventListener('click', function () {
   removeClass('.map', 'map--faded');
   removeClass('.ad-form', 'ad-form--disabled');
 });
+
+var pinPoint = mapPin.getBoundingClientRect();
+inputAddress.value = Math.round(pinPoint.x - MainPin.width) + ', ' + Math.round(pinPoint.y + MainPin.height);

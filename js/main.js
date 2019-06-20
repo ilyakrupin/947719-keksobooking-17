@@ -102,12 +102,12 @@ var disableElement = function () {
 
 disableElement(true);
 
-var pinPoint = function (location) {
-  inputAddress.value = Math.round(location.x - MainPin.width) + ', ' + Math.round(location.y + MainPin.height);
+var pinPoint = function () {
+  inputAddress.value = (mainPin.offsetLeft - MainPin.width) + ', ' + Math.round(mainPin.offsetTop + MainPin.height);
 };
 
 mainPin.addEventListener('mouseup', function () {
-  pinPoint(mainPin.getBoundingClientRect());
+  pinPoint();
 });
 
 var pinsOnMap = renderPins(findTemplate('#pin', '.map__pin'), buildObjects());

@@ -76,12 +76,8 @@ var buildObjects = function () {
   return array;
 };
 
-document.querySelector('.map__pins')
-    .appendChild(renderPins(findTemplate('#pin', '.map__pin'), buildObjects()));
-
-// module4-task1 //
-
-var mapPin = document.querySelector('.map__pin--main');
+var mapPins = document.querySelector('.map__pins');
+var mainPin = document.querySelector('.map__pin--main');
 var inputAddress = document.querySelector('input[name="address"]');
 
 var removeClass = function (classParent, classChild) {
@@ -102,14 +98,17 @@ var disableElement = function (status) {
 
 disableElement(true);
 
-mapPin.addEventListener('click', function () {
-  disableElement(false);
-  removeClass('.map', 'map--faded');
-  removeClass('.ad-form', 'ad-form--disabled');
-});
-
 var pinPoint = function (location) {
   inputAddress.value = Math.round(location.x - MainPin.width) + ', ' + Math.round(location.y + MainPin.height);
 };
 
-pinPoint(mapPin.getBoundingClientRect());
+mainPin.addEventListener('mouseup', function () {
+  pinPoint(mainPin.getBoundingClientRect());
+});
+
+mainPin.addEventListener('click', function () {
+  disableElement(false);
+  removeClass('.map', 'map--faded');
+  removeClass('.ad-form', 'ad-form--disabled');
+  mapPins.appendChild(renderPins(findTemplate('#pin', '.map__pin'), buildObjects()));
+});

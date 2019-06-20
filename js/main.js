@@ -1,6 +1,7 @@
 'use strict';
 
 var OBJECTS_AMOUNT = 8;
+var map = document.querySelector('.map');
 
 var Pin = {
   width: 50,
@@ -14,7 +15,7 @@ var MainPin = {
 
 var Map = {
   x1: Pin.width,
-  x2: document.querySelector('.map').offsetWidth - Pin.width,
+  x2: map.offsetWidth - Pin.width,
   y1: 130 + Pin.height,
   y2: 630
 };
@@ -78,22 +79,25 @@ var buildObjects = function () {
 
 var mapPins = document.querySelector('.map__pins');
 var mainPin = document.querySelector('.map__pin--main');
+var filters = document.querySelector('.map__filters');
+var filterList = filters.children;
+var adForm = document.querySelector('.ad-form');
+var adList = adForm.children;
 var inputAddress = document.querySelector('input[name="address"]');
 
 var removeClass = function (classParent, classChild) {
   document.querySelector(classParent).classList.remove(classChild);
 };
 
-var elementStatus = function (tag, status) {
-  var tagList = document.querySelectorAll(tag);
+var elementStatus = function (tagList) {
   for (var i = 0; i < tagList.length; i++) {
-    tagList[i].disabled = status;
+    tagList[i].disabled = !tagList[i].disabled;
   }
 };
 
-var disableElement = function (status) {
-  elementStatus('fieldset', status);
-  elementStatus('select', status);
+var disableElement = function () {
+  elementStatus(filterList);
+  elementStatus(adList);
 };
 
 disableElement(true);

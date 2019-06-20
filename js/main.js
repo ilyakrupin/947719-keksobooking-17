@@ -110,9 +110,11 @@ mainPin.addEventListener('mouseup', function () {
   pinPoint(mainPin.getBoundingClientRect());
 });
 
+var pinsOnMap = renderPins(findTemplate('#pin', '.map__pin'), buildObjects());
+
 mainPin.addEventListener('click', function () {
   disableElement(false);
   removeClass('.map', 'map--faded');
   removeClass('.ad-form', 'ad-form--disabled');
-  mapPins.appendChild(renderPins(findTemplate('#pin', '.map__pin'), buildObjects()));
+  mapPins.appendChild(pinsOnMap);
 });

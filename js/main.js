@@ -1,15 +1,21 @@
 'use strict';
 
 var OBJECTS_AMOUNT = 8;
+var map = document.querySelector('.map');
 
 var Pin = {
   width: 50,
   height: 70
 };
 
+var MainPin = {
+  width: 62 / 2,
+  height: 84
+};
+
 var Map = {
   x1: Pin.width,
-  x2: document.querySelector('.map').offsetWidth - Pin.width,
+  x2: map.offsetWidth - Pin.width,
   y1: 130 + Pin.height,
   y2: 630
 };
@@ -24,7 +30,8 @@ var findTemplate = function (classParent, classChild) {
 
 var loadPin = function (template, object) {
   var clone = template.cloneNode(true);
-  clone.style = 'left: ' + (object.location.x - Pin.width / 2) + 'px; top: ' + (object.location.y - Pin.height) + 'px';
+  clone.style.left = (object.location.x - Pin.width / 2) + 'px';
+  clone.style.top = (object.location.y - Pin.height) + 'px';
   clone.querySelector('img').src = object.author.avatar;
   clone.querySelector('img').alt = 'Заголовок объявления';
   return clone;
@@ -70,11 +77,38 @@ var buildObjects = function () {
   return array;
 };
 
+var mapPins = document.querySelector('.map__pins');
+var mainPin = document.querySelector('.map__pin--main');
+var filters = document.querySelector('.map__filters');
+var filterList = filters.children;
+var adForm = document.querySelector('.ad-form');
+var adList = adForm.children;
+var inputAddress = document.querySelector('input[name="address"]');
+
 var removeClass = function (classParent, classChild) {
   document.querySelector(classParent).classList.remove(classChild);
 };
 
-removeClass('.map', 'map--faded');
+var elementStatus = function (tagList) {
+  for (var i = 0; i < tagList.length; i++) {
+    tagList[i].disabled = !tagList[i].disabled;
+  }
+};
 
-document.querySelector('.map__pins')
-    .appendChild(renderPins(findTemplate('#pin', '.map__pin'), buildObjects()));
+var pinPoint = function () {
+  inputAddress.value = (mainPin.offsetLeft - MainPin.width) + ', ' + Math.round(mainPin.offsetTop + MainPin.height);
+};
+
+mainPin.addEventListener('mouseup', function () {
+  pinPoint();
+});
+
+var pinsOnMap = renderPins(findTemplate('#pin', '.map__pin'), buildObjects());
+
+mainPin.addEventListener('click', function () {
+  elementStatus(filterList);
+  elementStatus(adList);
+  removeClass('.map', 'map--faded');
+  removeClass('.ad-form', 'ad-form--disabled');
+  mapPins.appendChild(pinsOnMap);
+});

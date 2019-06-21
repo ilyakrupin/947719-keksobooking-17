@@ -95,13 +95,6 @@ var elementStatus = function (tagList) {
   }
 };
 
-var disableElement = function () {
-  elementStatus(filterList);
-  elementStatus(adList);
-};
-
-disableElement(true);
-
 var pinPoint = function () {
   inputAddress.value = (mainPin.offsetLeft - MainPin.width) + ', ' + Math.round(mainPin.offsetTop + MainPin.height);
 };
@@ -113,7 +106,8 @@ mainPin.addEventListener('mouseup', function () {
 var pinsOnMap = renderPins(findTemplate('#pin', '.map__pin'), buildObjects());
 
 mainPin.addEventListener('click', function () {
-  disableElement(false);
+  elementStatus(filterList);
+  elementStatus(adList);
   removeClass('.map', 'map--faded');
   removeClass('.ad-form', 'ad-form--disabled');
   mapPins.appendChild(pinsOnMap);

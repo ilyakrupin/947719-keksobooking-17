@@ -91,7 +91,7 @@ var removeClass = function (classParent, classChild) {
 
 var elementStatus = function (tagList) {
   for (var i = 0; i < tagList.length; i++) {
-    tagList[i].disabled = !tagList[i].disabled;
+    tagList[i].disabled = false;
   }
 };
 
@@ -106,58 +106,49 @@ var pinPoint = function () {
   inputAddress.value = (mainPin.offsetLeft - MainPin.width) + ', ' + Math.round(mainPin.offsetTop + MainPin.height);
 };
 
-mainPin.addEventListener('mouseup', function () {
-  pinPoint();
-});
-
 var pinsOnMap = renderPins(findTemplate('#pin', '.map__pin'), buildObjects());
 
-mainPin.addEventListener('click', function () {
-  switchElement();
-  removeClass('.map', 'map--faded');
-  removeClass('.ad-form', 'ad-form--disabled');
-  mapPins.appendChild(pinsOnMap);
-});
+mainPin.addEventListener('mousedown', function (evtDown) {
 
-// module4-task2 //
+  var originPosition = {
+    x: evtDown.clientX,
+    y: evtDown.clientY
+  };
 
-var selectType = adForm.querySelector('#type');
-var inputPrice = adForm.querySelector('#price');
+  console.log(originPosition);
 
-var Types = {
-  'bungalo': 0,
-  'flat': 1000,
-  'house': 5000,
-  'palace': 10000
-};
+  var onMainPinMouseMoveActive = function () {
+    switchElement();
+    removeClass('.map', 'map--faded');
+    removeClass('.ad-form', 'ad-form--disabled');
+    mapPins.appendChild(pinsOnMap);
+    mainPin.removeEventListener('mousemove', onMainPinMouseMoveActive);
+  };
 
-selectType.addEventListener('change', function (evt) {
-  inputPrice.min = inputPrice.placeholder = Types[evt.target.value];
-});
+  var onMainPinMouseMove = function (evtMove) {
 
-var selectTimeIn = adForm.querySelector('#timein');
-var selectTimeOut = adForm.querySelector('#timeout');
+    var shiftPosition = {
+      x: mainPin.offsetLeft - evtMove.clientX,
+      y: mainPin.offsetTop - evtMove.clientY
+    };
 
-selectTimeIn.addEventListener('change', function (evt) {
-  selectTimeOut.value = evt.target.value;
-  selectTimeOut[evt.currentTarget.selectedIndex].selected = true;
-});
+    originPosition = {
+      x: evtMove.clientX,
+      y: evtMove.clientY
+    };
 
-selectTimeOut.addEventListener('change', function (evt) {
-  selectTimeIn.value = evt.target.value;
-});
+    mainPin.style.left = (mainPin.offsetLeft - shiftPosition.x) + 'px';
+    mainPin.style.top = (mainPin.offsetTop - shiftPosition.y) + 'px';
 
-var selectRooms = adForm.querySelector('#room_number');
-var selectCapacity = adForm.querySelector('#capacity');
+    pinPoint();
+  };
 
-selectRooms.addEventListener('change', function (evt) {
-  var index = evt.target.selectedIndex;
-  selectCapacity.value = selectCapacity[index].value;
-  selectCapacity[index].selected = true;
-});
+  var onMainPinMouseUp = function () {
+    document.removeEventListener('mousemove', onMainPinMouseMove);
+  };
 
-selectCapacity.addEventListener('change', function (evt) {
-  var index = evt.target.selectedIndex;
-  selectRooms.value = selectRooms[index].value;
-  selectRooms[index].selected = true;
+  document.addEventListener('mousemove', onMainPinMouseMove);
+  document.addEventListener('mouseup', onMainPinMouseUp);
+  mainPin.addEventListener('mousemove', onMainPinMouseMoveActive);
+
 });

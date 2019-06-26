@@ -9,16 +9,18 @@ var Pin = {
 };
 
 var MainPin = {
-  width: 62 / 2,
+  width: 62,
   height: 84
 };
 
 var Map = {
-  x1: Pin.width,
-  x2: map.offsetWidth - Pin.width,
-  y1: 130 + Pin.height,
+  x1: 50,
+  x2: map.offsetWidth,
+  y1: 130,
   y2: 630
 };
+
+console.log(Map.x2);
 
 var types = ['palace', 'flat', 'house', 'bungalo'];
 
@@ -30,7 +32,7 @@ var findTemplate = function (classParent, classChild) {
 
 var loadPin = function (template, object) {
   var clone = template.cloneNode(true);
-  clone.style.left = (object.location.x - Pin.width / 2) + 'px';
+  clone.style.left = (object.location.x) + 'px';
   clone.style.top = (object.location.y - Pin.height) + 'px';
   clone.querySelector('img').src = object.author.avatar;
   clone.querySelector('img').alt = 'Заголовок объявления';
@@ -103,19 +105,29 @@ var switchElement = function () {
 switchElement();
 
 var pinPoint = function () {
-  inputAddress.value = (mainPin.offsetLeft - MainPin.width) + ', ' + Math.round(mainPin.offsetTop + MainPin.height);
+  inputAddress.value = (mainPin.offsetLeft + MainPin.width / 2) + ', ' + Math.round(mainPin.offsetTop + MainPin.height);
 };
 
 var pinsOnMap = renderPins(findTemplate('#pin', '.map__pin'), buildObjects());
 
 mainPin.addEventListener('mousedown', function (evtDown) {
 
-  var originPosition = {
+  var pointsA = {
     x: evtDown.clientX,
     y: evtDown.clientY
   };
 
-  console.log(originPosition);
+  console.log(pointsA);
+
+  var limitBorders = function (currentCoords, minCoords, maxCoords) {
+    if (currentCoords < minCoords) {
+      return minCoords;
+    } else if (currentCoords > maxCoords) {
+      return maxCoords;
+    } else {
+      return currentCoords;
+    }
+  };
 
   var onMainPinMouseMoveActive = function () {
     switchElement();
@@ -127,23 +139,31 @@ mainPin.addEventListener('mousedown', function (evtDown) {
 
   var onMainPinMouseMove = function (evtMove) {
 
-    var shiftPosition = {
-      x: mainPin.offsetLeft - evtMove.clientX,
-      y: mainPin.offsetTop - evtMove.clientY
+    var pointsB = {
+      x: limitBorders(evtMove.clientX, Map.x1, Map.x2),
+      y: limitBorders(evtMove.clientY, Map.y1, Map.y2),
     };
 
-    originPosition = {
-      x: evtMove.clientX,
-      y: evtMove.clientY
+    console.log(pointsB.x);
+
+    var shift = {
+      x: pointsA.x - pointsB.x,
+      y: pointsA.y - pointsB.y
     };
 
-    mainPin.style.left = (mainPin.offsetLeft - shiftPosition.x) + 'px';
-    mainPin.style.top = (mainPin.offsetTop - shiftPosition.y) + 'px';
+    pointsA = {
+      x: pointsB.x,
+      y: pointsB.y
+    };
+
+    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
 
     pinPoint();
   };
 
   var onMainPinMouseUp = function () {
+    pinPoint();
     document.removeEventListener('mousemove', onMainPinMouseMove);
   };
 

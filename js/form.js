@@ -1,5 +1,6 @@
 'use strict';
 
+var adForm = document.querySelector('.ad-form');
 var selectType = adForm.querySelector('#type');
 var inputPrice = adForm.querySelector('#price');
 

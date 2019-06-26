@@ -14,13 +14,11 @@ var MainPin = {
 };
 
 var Map = {
-  x1: 50,
-  x2: map.offsetWidth,
-  y1: 130,
-  y2: 630
+  xMin: MainPin.width,
+  xMax: map.offsetWidth,
+  yMin: 130,
+  yMax: 630
 };
-
-console.log(Map.x2);
 
 var types = ['palace', 'flat', 'house', 'bungalo'];
 
@@ -70,8 +68,8 @@ var buildObjects = function () {
             'type': getRandomTypes(types)
           },
           'location': {
-            'x': getRandomLocation(Map.x1, Map.x2),
-            'y': getRandomLocation(Map.y1, Map.y2)
+            'x': getRandomLocation(Map.xMin, Map.xMax),
+            'y': getRandomLocation(Map.yMin, Map.yMax)
           }
         };
   }
@@ -117,8 +115,6 @@ mainPin.addEventListener('mousedown', function (evtDown) {
     y: evtDown.clientY
   };
 
-  console.log(pointsA);
-
   var limitBorders = function (currentCoords, minCoords, maxCoords) {
     if (currentCoords < minCoords) {
       return minCoords;
@@ -140,11 +136,9 @@ mainPin.addEventListener('mousedown', function (evtDown) {
   var onMainPinMouseMove = function (evtMove) {
 
     var pointsB = {
-      x: limitBorders(evtMove.clientX, Map.x1, Map.x2),
-      y: limitBorders(evtMove.clientY, Map.y1, Map.y2),
+      x: limitBorders(evtMove.clientX, Map.xMin, Map.xMax),
+      y: limitBorders(evtMove.clientY, Map.yMin, Map.yMax),
     };
-
-    console.log(pointsB.x);
 
     var shift = {
       x: pointsA.x - pointsB.x,
@@ -164,11 +158,12 @@ mainPin.addEventListener('mousedown', function (evtDown) {
 
   var onMainPinMouseUp = function () {
     pinPoint();
-    document.removeEventListener('mousemove', onMainPinMouseMove);
+    map.removeEventListener('mousemove', onMainPinMouseMove);
+    map.removeEventListener('mouseup', onMainPinMouseMove);
   };
 
-  document.addEventListener('mousemove', onMainPinMouseMove);
-  document.addEventListener('mouseup', onMainPinMouseUp);
+  map.addEventListener('mousemove', onMainPinMouseMove);
+  map.addEventListener('mouseup', onMainPinMouseUp);
   mainPin.addEventListener('mousemove', onMainPinMouseMoveActive);
 
 });

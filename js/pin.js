@@ -11,7 +11,7 @@ var adList = adForm.children;
 var inputAddress = document.querySelector('input[name="address"]');
 
 var Pin = {
-  width: 50,
+  width: 50 / 2,
   height: 70
 };
 
@@ -20,7 +20,14 @@ var MainPin = {
   height: 82
 };
 
-var mapLimits = {
+var pinLimits = {
+  left: -Pin.width / 2,
+  right: map.offsetWidth - Pin.width / 2,
+  top: 130 - Pin.height,
+  bottom: 630 - Pin.height
+};
+
+var mainPinLimits = {
   left: -MainPin.width,
   right: map.offsetWidth - MainPin.width,
   top: 130 - MainPin.height,
@@ -75,8 +82,8 @@ var buildObjects = function () {
             'type': getRandomTypes(types)
           },
           'location': {
-            'x': getRandomLocation(mapLimits.left + Pin.width, mapLimits.right - Pin.width),
-            'y': getRandomLocation(mapLimits.top, mapLimits.bottom - Pin.height)
+            'x': getRandomLocation(pinLimits.left + Pin.width, pinLimits.right - Pin.width),
+            'y': getRandomLocation(pinLimits.top + Pin.height, pinLimits.bottom - Pin.height)
           }
         };
   }
@@ -103,23 +110,23 @@ var switchElement = function () {
 
 var limitCoords = function () {
   switch (true) {
-    case mainPin.offsetLeft < mapLimits.left:
-      mainPin.style.left = mapLimits.left + 'px';
+    case mainPin.offsetLeft < mainPinLimits.left:
+      mainPin.style.left = mainPinLimits.left + 'px';
       break;
-    case mainPin.offsetLeft > mapLimits.right:
-      mainPin.style.left = mapLimits.right + 'px';
+    case mainPin.offsetLeft > mainPinLimits.right:
+      mainPin.style.left = mainPinLimits.right + 'px';
       break;
-    case mainPin.offsetTop < mapLimits.top:
-      mainPin.style.top = mapLimits.top + 'px';
+    case mainPin.offsetTop < mainPinLimits.top:
+      mainPin.style.top = mainPinLimits.top + 'px';
       break;
-    case mainPin.offsetTop > mapLimits.bottom:
-      mainPin.style.top = mapLimits.bottom + 'px';
+    case mainPin.offsetTop > mainPinLimits.bottom:
+      mainPin.style.top = mainPinLimits.bottom + 'px';
       break;
   }
 };
 
 var showPinCoords = function () {
-  inputAddress.value = (mainPin.offsetLeft + MainPin.width) + ', ' + (mainPin.offsetTop);
+  inputAddress.value = (mainPin.offsetLeft + MainPin.width) + ', ' + (mainPin.offsetTop - MainPin.height);
 };
 
 showPinCoords();

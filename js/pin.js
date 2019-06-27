@@ -2,6 +2,13 @@
 
 var OBJECTS_AMOUNT = 8;
 var map = document.querySelector('.map');
+var mapPins = document.querySelector('.map__pins');
+var mainPin = document.querySelector('.map__pin--main');
+var filters = document.querySelector('.map__filters');
+var filterList = filters.children;
+var adForm = document.querySelector('.ad-form');
+var adList = adForm.children;
+var inputAddress = document.querySelector('input[name="address"]');
 
 var Pin = {
   width: 50,
@@ -9,15 +16,20 @@ var Pin = {
 };
 
 var MainPin = {
-  width: 62,
-  height: 84
+  width: 64,
+  height: 82
 };
 
-var Map = {
-  xMin: MainPin.width,
-  xMax: map.offsetWidth,
-  yMin: 130,
-  yMax: 630
+var mapBorders = {
+  left: map.offsetLeft,
+  right: map.offsetLeft + map.offsetWidth - MainPin.width / 2,
+};
+
+var mapLimits = {
+  left: 0,
+  right: map.offsetWidth,
+  top: 130,
+  bottom: 630
 };
 
 var types = ['palace', 'flat', 'house', 'bungalo'];
@@ -68,8 +80,8 @@ var buildObjects = function () {
             'type': getRandomTypes(types)
           },
           'location': {
-            'x': getRandomLocation(Map.xMin, Map.xMax),
-            'y': getRandomLocation(Map.yMin, Map.yMax)
+            'x': getRandomLocation(mapLimits.left + Pin.width, mapLimits.right - Pin.width),
+            'y': getRandomLocation(mapLimits.top, mapLimits.bottom - Pin.height)
           }
         };
   }
@@ -77,13 +89,7 @@ var buildObjects = function () {
   return array;
 };
 
-var mapPins = document.querySelector('.map__pins');
-var mainPin = document.querySelector('.map__pin--main');
-var filters = document.querySelector('.map__filters');
-var filterList = filters.children;
-var adForm = document.querySelector('.ad-form');
-var adList = adForm.children;
-var inputAddress = document.querySelector('input[name="address"]');
+var showPinsOnMap = renderPins(findTemplate('#pin', '.map__pin'), buildObjects());
 
 var removeClass = function (classParent, classChild) {
   document.querySelector(classParent).classList.remove(classChild);
@@ -100,13 +106,29 @@ var switchElement = function () {
   elementStatus(adList);
 };
 
-switchElement();
-
-var pinPoint = function () {
-  inputAddress.value = (mainPin.offsetLeft + MainPin.width / 2) + ', ' + Math.round(mainPin.offsetTop + MainPin.height);
+var limitPinCoords = function () {
+  switch (true) {
+    case mainPin.offsetLeft < mapLimits.left:
+      mainPin.style.left = mapLimits.left + 'px';
+      break;
+    case mainPin.offsetRight > mapLimits.right:
+      mainPin.style.right = mapLimits.right + 'px';
+      break;
+    case mainPin.offsetTop < mapLimits.top:
+      mainPin.style.top = mapLimits.top + 'px';
+      break;
+    case mainPin.offsetTop > mapLimits.bottom:
+      mainPin.style.bottom = mapLimits.bottom + 'px';
+      break;
+  }
 };
 
-var pinsOnMap = renderPins(findTemplate('#pin', '.map__pin'), buildObjects());
+var showPinCoords = function () {
+  inputAddress.value = (mainPin.offsetLeft + MainPin.width / 2) + ', ' + (mainPin.offsetTop + MainPin.height);
+};
+
+showPinCoords();
+switchElement();
 
 mainPin.addEventListener('mousedown', function (evtDown) {
 
@@ -115,55 +137,48 @@ mainPin.addEventListener('mousedown', function (evtDown) {
     y: evtDown.clientY
   };
 
-  var limitBorders = function (currentCoords, minCoords, maxCoords) {
-    if (currentCoords < minCoords) {
-      return minCoords;
-    } else if (currentCoords > maxCoords) {
-      return maxCoords;
-    } else {
-      return currentCoords;
-    }
-  };
-
   var onMainPinMouseMoveActive = function () {
     switchElement();
     removeClass('.map', 'map--faded');
     removeClass('.ad-form', 'ad-form--disabled');
-    mapPins.appendChild(pinsOnMap);
+    mapPins.appendChild(showPinsOnMap);
     mainPin.removeEventListener('mousemove', onMainPinMouseMoveActive);
   };
 
   var onMainPinMouseMove = function (evtMove) {
 
-    var pointsB = {
-      x: limitBorders(evtMove.clientX, Map.xMin, Map.xMax),
-      y: limitBorders(evtMove.clientY, Map.yMin, Map.yMax),
-    };
+    if ((evtMove.clientX < mapBorders.right) && (evtMove.clientY < mapLimits.bottom)) {
 
-    var shift = {
-      x: pointsA.x - pointsB.x,
-      y: pointsA.y - pointsB.y
-    };
+      var pointsB = {
+        x: evtMove.clientX,
+        y: evtMove.clientY,
+      };
 
-    pointsA = {
-      x: pointsB.x,
-      y: pointsB.y
-    };
+      var shift = {
+        x: pointsA.x - pointsB.x,
+        y: pointsA.y - pointsB.y
+      };
 
-    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      pointsA = {
+        x: pointsB.x,
+        y: pointsB.y
+      };
 
-    pinPoint();
+      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+
+      limitPinCoords();
+      showPinCoords();
+    }
   };
 
   var onMainPinMouseUp = function () {
-    pinPoint();
+    showPinCoords();
     map.removeEventListener('mousemove', onMainPinMouseMove);
-    map.removeEventListener('mouseup', onMainPinMouseMove);
+    document.removeEventListener('mouseup', onMainPinMouseMove);
   };
 
   map.addEventListener('mousemove', onMainPinMouseMove);
-  map.addEventListener('mouseup', onMainPinMouseUp);
+  document.addEventListener('mouseup', onMainPinMouseUp);
   mainPin.addEventListener('mousemove', onMainPinMouseMoveActive);
-
 });

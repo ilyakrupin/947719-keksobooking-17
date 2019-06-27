@@ -21,10 +21,10 @@ var MainPin = {
 };
 
 var mapLimits = {
-  left: 0,
-  right: map.offsetWidth,
-  top: 130,
-  bottom: 630
+  left: -MainPin.width,
+  right: map.offsetWidth - MainPin.width,
+  top: 130 - MainPin.height,
+  bottom: 630 - MainPin.height
 };
 
 var types = ['palace', 'flat', 'house', 'bungalo'];
@@ -103,17 +103,17 @@ var switchElement = function () {
 
 var limitCoords = function () {
   switch (true) {
-    case mainPin.offsetLeft < (mapLimits.left - MainPin.width):
-      mainPin.style.left = (mapLimits.left - MainPin.width) + 'px';
+    case mainPin.offsetLeft < mapLimits.left:
+      mainPin.style.left = mapLimits.left + 'px';
       break;
-    case mainPin.offsetLeft > (mapLimits.right - MainPin.width):
-      mainPin.style.left = (mapLimits.right - MainPin.width) + 'px';
+    case mainPin.offsetLeft > mapLimits.right:
+      mainPin.style.left = mapLimits.right + 'px';
       break;
-    case mainPin.offsetTop < (mapLimits.top - MainPin.height):
-      mainPin.style.top = (mapLimits.top - MainPin.height) + 'px';
+    case mainPin.offsetTop < mapLimits.top:
+      mainPin.style.top = mapLimits.top + 'px';
       break;
-    case mainPin.offsetTop > (mapLimits.bottom - MainPin.height):
-      mainPin.style.top = (mapLimits.bottom - MainPin.height) + 'px';
+    case mainPin.offsetTop > mapLimits.bottom:
+      mainPin.style.top = mapLimits.bottom + 'px';
       break;
   }
 };

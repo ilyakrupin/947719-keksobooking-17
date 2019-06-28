@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var adForm = document.querySelector('.ad-form');
   var selectType = adForm.querySelector('#type');
   var inputPrice = adForm.querySelector('#price');
@@ -9,15 +10,8 @@
   var selectTimeIn = adForm.querySelector('#timein');
   var selectTimeOut = adForm.querySelector('#timeout');
 
-  var Types = {
-    'bungalo': 0,
-    'flat': 1000,
-    'house': 5000,
-    'palace': 10000
-  };
-
   selectType.addEventListener('change', function (evt) {
-    inputPrice.min = inputPrice.placeholder = Types[evt.target.value];
+    inputPrice.min = inputPrice.placeholder = window.data.Types[evt.target.value];
   });
 
   selectTimeIn.addEventListener('change', function (evt) {
@@ -40,4 +34,5 @@
     selectRooms.value = selectRooms[index].value;
     selectRooms[index].selected = true;
   });
+
 })();

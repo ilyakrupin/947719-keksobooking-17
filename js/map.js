@@ -5,7 +5,6 @@
   var MainPin = {
     width: 64 / 2,
     height: 82,
-    container: document.querySelector('.map__pins'),
     button: document.querySelector('.map__pin--main'),
     input: document.querySelector('input[name="address"]')
   };
@@ -55,7 +54,7 @@
       window.switchElement();
       removeClass('.map', 'map--faded');
       removeClass('.ad-form', 'ad-form--disabled');
-      MainPin.container.appendChild(window.showPinsOnMap);
+      window.showPins();
       MainPin.button.removeEventListener('mousemove', onMainPinMouseMoveActive);
     };
 

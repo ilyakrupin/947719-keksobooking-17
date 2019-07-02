@@ -9,15 +9,14 @@
       areaLimitBottom: 630,
     },
     Pin: {
-      types: ['palace', 'flat', 'house', 'bungalo'],
-      total: 8
+      types: ['palace', 'flat', 'house', 'bungalo']
     },
     Types: {
       'bungalo': 0,
       'flat': 1000,
       'house': 5000,
       'palace': 10000
-    }
+    },
   };
 
 })();

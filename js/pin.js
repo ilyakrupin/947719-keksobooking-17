@@ -5,64 +5,54 @@
   var Pin = {
     width: 50 / 2,
     height: 70,
-    template: document.querySelector('#pin').content.querySelector('.map__pin')
+    template: document.querySelector('#pin').content.querySelector('.map__pin'),
+    container: document.querySelector('.map__pins')
   };
 
-  var pinBoundaries = {
-    left: -Pin.width / 2,
-    right: window.data.Map.area.offsetWidth - Pin.width / 2,
-    top: window.data.Map.areaLimitTop - Pin.height,
-    bottom: window.data.Map.areaLimitBottom - Pin.height
+  var Error = {
+    template: document.querySelector('#error').content.querySelector('.error'),
+    container: document.querySelector('main')
   };
 
-  var loadPin = function (template, object) {
-    var clone = template.cloneNode(true);
+  var ESC = 27;
+
+  var loadPin = function (object) {
+    var clone = Pin.template.cloneNode(true);
     clone.style.left = (object.location.x) + 'px';
     clone.style.top = (object.location.y - Pin.height) + 'px';
-    clone.querySelector('img').src = object.author.avatar;
-    clone.querySelector('img').alt = 'Заголовок объявления';
+    clone.children[0].src = object.author.avatar;
+    clone.children[0].alt = object.offer.title;
+
     return clone;
   };
 
-  var renderPins = function (template, object) {
+  var renderPins = function (object) {
     var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < window.data.Pin.total; i++) {
-      fragment.appendChild(loadPin(template, object[i]));
+    for (var i = 0; i < object.length; i++) {
+      fragment.appendChild(loadPin(object[i]));
     }
 
-    return fragment;
+    Pin.container.appendChild(fragment);
   };
 
-  var getRandomLocation = function (min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+  var showError = function (message) {
+    var errorMessage = Error.template.cloneNode(true);
+    errorMessage.children[0].textContent = message;
+    Error.container.appendChild(errorMessage);
+
+    Error.container.addEventListener('mousedown', function () {
+      errorMessage.remove();
+    });
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ESC) {
+        errorMessage.remove();
+      }
+    });
   };
 
-  var getRandomTypes = function (array) {
-    return Math.floor(Math.random() * array.length - 1);
+  window.showPins = function () {
+    window.load(renderPins, showError);
   };
 
-  var buildPins = function () {
-    var array = [];
-
-    for (var i = 0; i < window.data.Pin.total; i++) {
-      array[i] =
-          {
-            'author': {
-              'avatar': 'img/avatars/user0' + (i + 1) + '.png'
-            },
-            'offer': {
-              'type': getRandomTypes(window.data.Pin.types)
-            },
-            'location': {
-              'x': getRandomLocation(pinBoundaries.left + Pin.width, pinBoundaries.right - Pin.width),
-              'y': getRandomLocation(pinBoundaries.top + Pin.height, pinBoundaries.bottom - Pin.height)
-            }
-          };
-    }
-
-    return array;
-  };
-
-  window.showPinsOnMap = renderPins(Pin.template, buildPins());
 })();

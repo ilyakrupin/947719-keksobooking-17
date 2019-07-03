@@ -23,7 +23,7 @@
     clone.style.top = (object.location.y - Pin.height) + 'px';
     clone.children[0].src = object.author.avatar;
     clone.children[0].alt = object.offer.title;
-
+    clone.setAttribute('id', object.offer.type);
     return clone;
   };
 

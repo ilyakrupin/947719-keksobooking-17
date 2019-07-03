@@ -11,6 +11,7 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === HTTP_OK) {
+        window.data.ads = xhr.response;
         onSuccess(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);

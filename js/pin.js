@@ -5,6 +5,7 @@
   var Pin = {
     width: 50 / 2,
     height: 70,
+    count: 5,
     template: document.querySelector('#pin').content.querySelector('.map__pin'),
     container: document.querySelector('.map__pins')
   };
@@ -28,7 +29,9 @@
 
   var renderPins = function (object) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < object.length; i++) {
+    var amount = (object.length <= Pin.count) ? object.length : Pin.count;
+    for (var i = 0; i < amount; i++) {
+      // xhr.response
       fragment.appendChild(loadPin(object[i]));
     }
 

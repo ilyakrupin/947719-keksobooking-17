@@ -4,12 +4,12 @@
 
   window.data = {
     Map: {
-      area: document.querySelector('.map'),
-      areaLimitTop: 130,
-      areaLimitBottom: 630,
+      limitTop: 130,
+      limitBottom: 630,
     },
     Pin: {
-      types: ['palace', 'flat', 'house', 'bungalo']
+      types: ['palace', 'flat', 'house', 'bungalo'],
+      count: 5
     },
     Types: {
       'bungalo': 0,

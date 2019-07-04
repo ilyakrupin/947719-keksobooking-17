@@ -2,6 +2,8 @@
 
 (function () {
 
+  var map = document.querySelector('.map');
+
   var MainPin = {
     width: 64 / 2,
     height: 82,
@@ -11,13 +13,9 @@
 
   var mainPinBoundaries = {
     left: -MainPin.width,
-    right: window.data.Map.area.offsetWidth - MainPin.width,
-    top: window.data.Map.areaLimitTop - MainPin.height,
-    bottom: window.data.Map.areaLimitBottom - MainPin.height
-  };
-
-  var removeClass = function (classParent, classChild) {
-    document.querySelector(classParent).classList.remove(classChild);
+    right: map.offsetWidth - MainPin.width,
+    top: map.limitTop - MainPin.height,
+    bottom: map.limitBottom - MainPin.height
   };
 
   var limitCoords = function () {
@@ -51,9 +49,7 @@
     };
 
     var onMainPinMouseMoveActive = function () {
-      window.switchElement();
-      removeClass('.map', 'map--faded');
-      removeClass('.ad-form', 'ad-form--disabled');
+      window.activateForm();
       window.showPins();
       MainPin.button.removeEventListener('mousemove', onMainPinMouseMoveActive);
     };

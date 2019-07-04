@@ -27,7 +27,7 @@
     return clone;
   };
 
-  var reducePins = function () {
+  var limitNumberPins = function () {
     var mapPinsList = document.querySelectorAll('.map__pin');
 
     [].forEach.call(mapPinsList, function (element, index) {
@@ -47,10 +47,9 @@
 
       Pin.container.appendChild(fragment);
       pinsActive = true;
+      limitNumberPins();
     }
-
     pinsActive = false;
-    reducePins();
   };
 
   var showError = function (message) {

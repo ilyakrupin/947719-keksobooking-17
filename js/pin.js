@@ -38,9 +38,10 @@
 
   var renderPins = function (object) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < object.length; i++) {
-      fragment.appendChild(loadPin(object[i]));
-    }
+
+    object.forEach(function (element) {
+      fragment.appendChild(loadPin(element));
+    });
 
     Pin.container.appendChild(fragment);
     reducePins();

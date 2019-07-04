@@ -13,6 +13,16 @@
     }
   };
 
+  // var elementStatus = function (tagList) {
+  //   for (var i = 0; i < tagList.length; i++) {
+  //     tagList[i].disabled = false;
+  //   }
+  //
+  //   tagList.forEach(function (element) {
+  //     element.disabled = false;
+  //   })
+  // };
+
   window.switchElement = function () {
     elementStatus(filterList);
     elementStatus(adList);

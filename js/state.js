@@ -8,22 +8,15 @@
   var adList = adForm.children;
 
   var elementStatus = function (tagList) {
-    for (var i = 0; i < tagList.length; i++) {
-      tagList[i].disabled = false;
-    }
+    [].forEach.call(tagList, function (element) {
+      element.disabled = !element.disabled;
+    });
   };
 
-  // var elementStatus = function (tagList) {
-  //   for (var i = 0; i < tagList.length; i++) {
-  //     tagList[i].disabled = false;
-  //   }
-  //
-  //   tagList.forEach(function (element) {
-  //     element.disabled = false;
-  //   })
-  // };
+  elementStatus(filterList);
+  elementStatus(adList);
 
-  window.switchElement = function () {
+  window.activateForm = function () {
     elementStatus(filterList);
     elementStatus(adList);
   };

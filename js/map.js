@@ -51,7 +51,7 @@
     };
 
     var onMainPinMouseMoveActive = function () {
-      window.switchElement();
+      window.activateForm();
       removeClass('.map', 'map--faded');
       removeClass('.ad-form', 'ad-form--disabled');
       window.showPins();

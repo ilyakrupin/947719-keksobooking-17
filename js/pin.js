@@ -5,7 +5,6 @@
   var Pin = {
     width: 50 / 2,
     height: 70,
-    count: 5,
     template: document.querySelector('#pin').content.querySelector('.map__pin'),
     container: document.querySelector('.map__pins')
   };
@@ -27,15 +26,24 @@
     return clone;
   };
 
+  var reducePins = function () {
+    var mapPinsList = document.querySelectorAll('.map__pin');
+
+    [].forEach.call(mapPinsList, function (element, index) {
+      if (index > window.data.Pin.count) {
+        element.style.visibility = 'hidden';
+      }
+    });
+  };
+
   var renderPins = function (object) {
     var fragment = document.createDocumentFragment();
-    var amount = (object.length <= Pin.count) ? object.length : Pin.count;
-    for (var i = 0; i < amount; i++) {
-      // xhr.response
+    for (var i = 0; i < object.length; i++) {
       fragment.appendChild(loadPin(object[i]));
     }
 
     Pin.container.appendChild(fragment);
+    reducePins();
   };
 
   var showError = function (message) {
@@ -57,5 +65,4 @@
   window.showPins = function () {
     window.load(renderPins, showError);
   };
-
 })();

@@ -15,13 +15,14 @@
   };
 
   var ESC = 27;
+  var pinsActive = true;
 
   var loadPin = function (object) {
     var clone = Pin.template.cloneNode(true);
     clone.style.left = (object.location.x) + 'px';
     clone.style.top = (object.location.y - Pin.height) + 'px';
-    clone.children[0].src = object.author.avatar;
-    clone.children[0].alt = object.offer.title;
+    clone.firstElementChild.src = object.author.avatar;
+    clone.firstElementChild.alt = object.offer.title;
     clone.setAttribute('id', object.offer.type);
     return clone;
   };
@@ -37,19 +38,24 @@
   };
 
   var renderPins = function (object) {
-    var fragment = document.createDocumentFragment();
+    if (pinsActive) {
+      var fragment = document.createDocumentFragment();
 
-    object.forEach(function (element) {
-      fragment.appendChild(loadPin(element));
-    });
+      object.forEach(function (element) {
+        fragment.appendChild(loadPin(element));
+      });
 
-    Pin.container.appendChild(fragment);
+      Pin.container.appendChild(fragment);
+      pinsActive = true;
+    }
+
+    pinsActive = false;
     reducePins();
   };
 
   var showError = function (message) {
     var errorMessage = Error.template.cloneNode(true);
-    errorMessage.children[0].textContent = message;
+    errorMessage.firstElementChild.textContent = message;
     Error.container.appendChild(errorMessage);
 
     Error.container.addEventListener('mousedown', function () {

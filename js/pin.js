@@ -69,6 +69,6 @@
   };
 
   window.showPins = function () {
-    window.load(renderPins, showError);
+    window.load(renderPins, window.renderCards, showError);
   };
 })();

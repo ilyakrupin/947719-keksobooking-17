@@ -62,12 +62,10 @@
     return clone;
   };
 
-  var renderCards = function (object) {
+  window.renderCards = function (object) {
     var fragment = document.createDocumentFragment();
     fragment.appendChild(loadCard(object[0]));
     container.insertBefore(fragment, block);
   };
-
-  window.load(renderCards);
 
 })();

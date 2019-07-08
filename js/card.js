@@ -16,7 +16,8 @@
     time: '.popup__text--time',
     features: '.popup__features',
     description: '.popup__description',
-    photos: '.popup__photos'
+    photos: '.popup__photos',
+    photo: '.popup__photo'
   };
 
   var typeProperty = {
@@ -49,13 +50,14 @@
     var clone = template.cloneNode(true);
     var cardFeatures = clone.querySelector(classList.features);
     var cardPhotos = clone.querySelector(classList.photos);
+    var cardPhoto = cardPhotos.querySelector(classList.photo);
 
     clone.querySelector(classList.avatar).src = object.author.avatar;
     clone.querySelector(classList.title).textContent = object.offer.title;
     clone.querySelector(classList.address).textContent = object.offer.adress;
     clone.querySelector(classList.price).textContent = object.offer.price + '₽/ночь';
     clone.querySelector(classList.type).textContent = typeProperty[object.offer.type];
-    clone.querySelector(classList.capacity).textContent = object.offer.rooms + ' ' + numDecline(object.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для ' + object.offer.guests + ' ' + numDecline(object.offer.guests, 'гость', 'гостя', 'гостей');
+    clone.querySelector(classList.capacity).textContent = object.offer.rooms + ' ' + numDecline(object.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для ' + object.offer.guests + ' ' + numDecline(object.offer.guests, 'гостя', 'гостей', 'гостей');
     clone.querySelector(classList.time).textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
     clone.querySelector(classList.description).textContent = object.offer.description;
 
@@ -66,17 +68,11 @@
     });
 
     object.offer.photos.forEach(function (element) {
-      var newImg = document.createElement('img');
-      Object.assign(newImg, {
-        src: element,
-        className: 'popup__photo',
-        width: '45',
-        height: '40',
-        alt: 'Фотография жилья'
-      });
-
-      cardPhotos.appendChild(newImg);
+      var cloneCardPhoto = cardPhoto.cloneNode(true);
+      cloneCardPhoto.src = element;
+      cardPhotos.appendChild(cloneCardPhoto);
     });
+    cardPhotos.firstElementChild.remove();
 
     return clone;
   };

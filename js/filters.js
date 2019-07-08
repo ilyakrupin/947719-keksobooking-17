@@ -3,7 +3,7 @@
 (function () {
 
   var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
+  var mapPins = map.querySelector('.map__pins');
   var typeFilter = map.querySelector('#housing-type');
 
   var onTypeFilterChange = function () {

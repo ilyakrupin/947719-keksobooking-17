@@ -26,6 +26,25 @@
     bungalo: 'Бунгало'
   };
 
+  var numDecline = function (number, nominative, genitiveSingular, genitivePlural) {
+    number %= 100;
+
+    if (number > 14) {
+      number %= 10;
+    }
+
+    switch (true) {
+      case number === 1:
+        return nominative;
+      case number >= 2 && number <= 4:
+        return genitiveSingular;
+      case number >= 10 && number <= 14:
+        return genitivePlural;
+      default:
+        return genitivePlural;
+    }
+  };
+
   var loadCard = function (object) {
     var clone = template.cloneNode(true);
     var cardFeatures = clone.querySelector(classList.features);
@@ -36,7 +55,7 @@
     clone.querySelector(classList.address).textContent = object.offer.adress;
     clone.querySelector(classList.price).textContent = object.offer.price + '₽/ночь';
     clone.querySelector(classList.type).textContent = typeProperty[object.offer.type];
-    clone.querySelector(classList.capacity).textContent = object.offer.rooms + ' комнаты для ' + object.offer.guests + ' гостей';
+    clone.querySelector(classList.capacity).textContent = object.offer.rooms + ' ' + numDecline(object.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для ' + object.offer.guests + ' ' + numDecline(object.offer.guests, 'гость', 'гостя', 'гостей');
     clone.querySelector(classList.time).textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
     clone.querySelector(classList.description).textContent = object.offer.description;
 

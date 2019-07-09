@@ -7,10 +7,10 @@
   var typeFilter = map.querySelector('#housing-type');
 
   var onTypeFilterChange = function () {
-    var mapPinsList = mapPins.querySelectorAll('button[id]');
+    var mapPinsList = mapPins.querySelectorAll('button[housing]');
 
     [].forEach.call(mapPinsList, function (element, index) {
-      element.style.visibility = (typeFilter.value === element.id) ? 'visible' : 'hidden';
+      element.style.visibility = (typeFilter.value === element.getAttribute('housing')) ? 'visible' : 'hidden';
       if (typeFilter.value === 'any' && index < window.data.Pin.count) {
         element.style.visibility = 'visible';
       }

@@ -23,7 +23,8 @@
     clone.style.top = (object.location.y - Pin.height) + 'px';
     clone.firstElementChild.src = object.author.avatar;
     clone.firstElementChild.alt = object.offer.title;
-    clone.id = object.offer.type;
+    clone.setAttribute('housing', object.offer.type);
+    clone.setAttribute('lot', object.lot);
     return clone;
   };
 

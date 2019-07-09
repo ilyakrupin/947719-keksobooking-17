@@ -74,6 +74,8 @@
     });
     cardPhotos.firstElementChild.remove();
 
+    clone.setAttribute('lot', object.lot);
+
     return clone;
   };
 

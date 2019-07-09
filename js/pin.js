@@ -17,7 +17,7 @@
   var ESC = 27;
   var pinsActive = true;
 
-  var loadPin = function (object) {
+  var loadPin = function (object, cb) {
     var clone = Pin.template.cloneNode(true);
     clone.style.left = (object.location.x) + 'px';
     clone.style.top = (object.location.y - Pin.height) + 'px';
@@ -25,6 +25,8 @@
     clone.firstElementChild.alt = object.offer.title;
     clone.setAttribute('housing', object.offer.type);
     clone.setAttribute('lot', object.lot);
+    clone.addEventListener('click', cb);
+
     return clone;
   };
 
@@ -43,7 +45,7 @@
       var fragment = document.createDocumentFragment();
 
       object.forEach(function (element) {
-        fragment.appendChild(loadPin(element));
+        fragment.appendChild(loadPin(element, window.onButtonClick));
       });
 
       Pin.container.appendChild(fragment);
@@ -72,4 +74,5 @@
   window.showPins = function () {
     window.load(renderPins, window.renderCards, showError);
   };
+
 })();

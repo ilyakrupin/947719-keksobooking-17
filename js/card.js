@@ -74,6 +74,7 @@
     });
     cardPhotos.firstElementChild.remove();
 
+    clone.style.visibility = 'hidden';
     clone.setAttribute('lot', object.lot);
 
     return clone;
@@ -81,7 +82,11 @@
 
   window.renderCards = function (object) {
     var fragment = document.createDocumentFragment();
-    fragment.appendChild(loadCard(object[0]));
+
+    object.forEach(function (element) {
+      fragment.appendChild(loadCard(element));
+    });
+
     container.insertBefore(fragment, block);
   };
 

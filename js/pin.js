@@ -24,7 +24,14 @@
     clone.firstElementChild.src = object.author.avatar;
     clone.firstElementChild.alt = object.offer.title;
     clone.setAttribute('housing', object.offer.type);
-    clone.setAttribute('lot', object.lot);
+    // clone.setAttribute('lot', object.lot);
+
+    var onButtonClick = function (evt) {
+      console.log(evt.target);
+    };
+
+    clone.addEventListener('click', onButtonClick);
+
     return clone;
   };
 
@@ -72,4 +79,5 @@
   window.showPins = function () {
     window.load(renderPins, window.renderCards, showError);
   };
+
 })();

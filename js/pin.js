@@ -25,7 +25,7 @@
     clone.firstElementChild.alt = object.offer.title;
     clone.setAttribute('housing', object.offer.type);
     clone.setAttribute('lot', object.lot);
-    clone.addEventListener('click', cb);
+    clone.addEventListener('click', cb.onPinButtonClick);
 
     return clone;
   };
@@ -45,7 +45,7 @@
       var fragment = document.createDocumentFragment();
 
       object.forEach(function (element) {
-        fragment.appendChild(loadPin(element, window.onButtonClick));
+        fragment.appendChild(loadPin(element, window.handlers));
       });
 
       Pin.container.appendChild(fragment);

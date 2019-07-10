@@ -11,12 +11,12 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === HTTP_OK) {
-        var newArray = xhr.response;
-        newArray.forEach(function (element, index) {
+        var xhrResponse = xhr.response;
+        xhrResponse.forEach(function (element, index) {
           element.lot = 'lot' + index;
         });
-        onSuccessPins(newArray);
-        onSuccessCards(newArray);
+        onSuccessPins(xhrResponse);
+        onSuccessCards(xhrResponse);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }

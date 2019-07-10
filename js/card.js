@@ -80,7 +80,7 @@
     return clone;
   };
 
-  window.renderCards = function (object) {
+  var renderCards = function (object) {
     var fragment = document.createDocumentFragment();
 
     object.forEach(function (element) {
@@ -88,6 +88,18 @@
     });
 
     container.insertBefore(fragment, block);
+  };
+
+  var hideCards = function () {
+    var cards = container.querySelectorAll('article[lot]');
+    cards.forEach(function (element) {
+      element.style.visibility = 'hidden';
+    });
+  };
+
+  window.card = {
+    renderCards: renderCards,
+    hideCards: hideCards
   };
 
 })();

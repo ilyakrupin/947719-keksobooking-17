@@ -25,7 +25,7 @@
     clone.firstElementChild.alt = object.offer.title;
     clone.setAttribute('housing', object.offer.type);
     clone.setAttribute('lot', object.lot);
-    clone.addEventListener('click', cb.onPinButtonClick);
+    clone.addEventListener('click', cb);
 
     return clone;
   };
@@ -45,7 +45,7 @@
       var fragment = document.createDocumentFragment();
 
       object.forEach(function (element) {
-        fragment.appendChild(loadPin(element, window.handlers));
+        fragment.appendChild(loadPin(element, window.onPinButtonClick));
       });
 
       Pin.container.appendChild(fragment);
@@ -72,7 +72,7 @@
   };
 
   window.showPins = function () {
-    window.load(renderPins, window.renderCards, showError);
+    window.load(renderPins, window.card.renderCards, showError);
   };
 
 })();

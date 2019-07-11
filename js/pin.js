@@ -17,7 +17,7 @@
   };
 
   var onPinButtonClick = function (data) {
-    window.card.show(data);
+    window.card.render(data);
   };
 
   var loadPin = function (object) {

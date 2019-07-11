@@ -46,15 +46,15 @@
     }
   };
 
-  var hideCard = function () {
+  var removeCard = function () {
     var popup = window.map.element.querySelector('.popup');
     if (popup) {
       window.map.element.removeChild(popup);
     }
   };
 
-  var showCard = function (data) {
-    hideCard();
+  var renderCard = function (data) {
+    removeCard();
     window.map.element.appendChild(loadCard(data));
   };
 
@@ -88,7 +88,7 @@
     cardPhotos.firstElementChild.remove();
 
     closeButton.addEventListener('click', function () {
-      hideCard();
+      removeCard();
     });
 
     return clone;
@@ -96,13 +96,13 @@
 
   document.addEventListener('keyup', function (evt) {
     if (evt.keyCode === ESC) {
-      hideCard();
+      removeCard();
     }
   });
 
   window.card = {
-    hide: hideCard,
-    show: showCard
+    remove: removeCard,
+    render: renderCard
   };
 
 })();

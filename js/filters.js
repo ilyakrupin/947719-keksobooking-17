@@ -5,6 +5,8 @@
 
   var onTypeFilterChange = function () {
     var filteredPins = window.pin.slice();
+
+    console.log(window.pin);
     // сделать выборку
 
     window.pin.render(filteredPins);

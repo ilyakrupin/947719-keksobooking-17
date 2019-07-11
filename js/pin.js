@@ -83,7 +83,9 @@
     data: function () {
       return pins;
     },
-    render: renderPins
+    render: function (object) {
+      renderPins(object);
+    }
   };
 
 })();

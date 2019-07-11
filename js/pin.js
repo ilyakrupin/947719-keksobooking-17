@@ -48,6 +48,7 @@
   };
 
   var renderPins = function (object) {
+    console.log(object);
     removePins();
     var fragment = document.createDocumentFragment();
 
@@ -83,9 +84,7 @@
     data: function () {
       return pins;
     },
-    render: function (object) {
-      renderPins(object);
-    }
+    render: renderPins
   };
 
 })();

@@ -8,21 +8,21 @@
     return filter.value === data.offer.type;
   };
 
-  var filterData = function (data) {
-  // возвращает новый массив по условию функции для элементов true
-    return data.filter(function (item) {
-      // передаем из xhrData текущий элемент массива
-      return filterElements.every(function (filter) {
-        return (filter.value === 'any') ? true : filterRules(item, filter);
-      });
-    });
-  };
 
   var onFormFiltersChange = function (evt) {
     var xhrData = window.pin.data();
-    console.log(filterData(xhrData));
-    console.log(evt.target.value);
-    window.pin.render(filterData(xhrData));
+
+    var newArray = function () {
+    // возвращает новый массив по условию функции для элементов true
+      return xhrData.filter(function (item) {
+        // передаем из xhrData текущий элемент массива
+        return filterRules(item, evt.target);
+      });
+    };
+
+    var newData = newArray();
+
+    window.pin.render(newData);
   };
 
   formFilters.addEventListener('change', onFormFiltersChange);

@@ -4,7 +4,7 @@
   var URL = 'https://js.dump.academy/keksobooking/data';
   var HTTP_OK = 200;
 
-  window.load = function (onSuccessPins, onSuccessCards, onError) {
+  window.load = function (onSuccess, onError) {
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -12,11 +12,7 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === HTTP_OK) {
         var xhrResponse = xhr.response;
-        xhrResponse.forEach(function (element, index) {
-          element.lot = 'lot' + index;
-        });
-        onSuccessPins(xhrResponse);
-        onSuccessCards(xhrResponse);
+        onSuccess(xhrResponse);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }

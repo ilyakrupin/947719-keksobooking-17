@@ -2,27 +2,24 @@
 
 (function () {
   var formFilters = window.map.element.querySelector('.map__filters');
-  var filterElements = Array.from(document.querySelector('.map__filters').children);
 
   var filterRules = function (data, filter) {
-    return filter.value === data.offer.type;
+    return data.offer.type === filter.value;
   };
 
-
-  var onFormFiltersChange = function (evt) {
-    var xhrData = window.pin.data();
-
-    var newArray = function () {
-    // возвращает новый массив по условию функции для элементов true
-      return xhrData.filter(function (item) {
-        // передаем из xhrData текущий элемент массива
-        return filterRules(item, evt.target);
+  var filterData = function (data, elements) {
+    return data.filter(function (item) {
+      return elements.every(function (filter) {
+        return (filter.value === 'any') ? true : filterRules(item, filter);
       });
-    };
+    });
+  };
 
-    var newData = newArray();
-
-    window.pin.render(newData);
+  var onFormFiltersChange = function () {
+    var newData = window.pin.data();
+    var filterElements = [];
+    filterElements[0] = Array.from(document.querySelector('.map__filters').children).shift();
+    window.pin.render(filterData(newData, filterElements));
   };
 
   formFilters.addEventListener('change', onFormFiltersChange);

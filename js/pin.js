@@ -48,7 +48,6 @@
   };
 
   var renderPins = function (object) {
-    console.log(object);
     removePins();
     var fragment = document.createDocumentFragment();
 

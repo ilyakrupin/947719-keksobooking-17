@@ -3,6 +3,7 @@
 (function () {
   var ESC = 27;
   var PIN_COUNT = 5;
+  var DEBOUNCE_INTERVAL = 500;
 
   var pins = [];
 
@@ -14,6 +15,20 @@
 
   var Error = {
     template: document.querySelector('#error').content.querySelector('.error')
+  };
+
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
   };
 
   var onPinButtonClick = function (data) {
@@ -83,7 +98,7 @@
     data: function () {
       return pins;
     },
-    render: renderPins
+    render: debounce(renderPins)
   };
 
 })();

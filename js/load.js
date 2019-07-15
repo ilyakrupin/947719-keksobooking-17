@@ -4,15 +4,15 @@
   var URL = 'https://js.dump.academy/keksobooking/data';
   var HTTP_OK = 200;
 
-  window.load = function (onSuccessPins, onSuccessCards, onError) {
+  window.load = function (onSuccess, onError) {
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       if (xhr.status === HTTP_OK) {
-        onSuccessPins(xhr.response);
-        onSuccessCards(xhr.response);
+        var xhrResponse = xhr.response;
+        onSuccess(xhrResponse);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }

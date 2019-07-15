@@ -1,21 +1,39 @@
 'use strict';
 
 (function () {
+  var ESC = 27;
+  var PIN_COUNT = 5;
+  var DEBOUNCE_INTERVAL = 500;
+
+  var pins = [];
 
   var Pin = {
-    width: 50 / 2,
+    width: 25,
     height: 70,
-    template: document.querySelector('#pin').content.querySelector('.map__pin'),
-    container: document.querySelector('.map__pins')
+    template: document.querySelector('#pin').content.querySelector('.map__pin')
   };
 
   var Error = {
-    template: document.querySelector('#error').content.querySelector('.error'),
-    container: document.querySelector('main')
+    template: document.querySelector('#error').content.querySelector('.error')
   };
 
-  var ESC = 27;
-  var pinsActive = true;
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
+  var onPinButtonClick = function (data) {
+    window.card.render(data);
+  };
 
   var loadPin = function (object) {
     var clone = Pin.template.cloneNode(true);
@@ -23,33 +41,36 @@
     clone.style.top = (object.location.y - Pin.height) + 'px';
     clone.firstElementChild.src = object.author.avatar;
     clone.firstElementChild.alt = object.offer.title;
-    clone.id = object.offer.type;
+
+    clone.addEventListener('click', function () {
+      onPinButtonClick(object);
+    });
+
     return clone;
   };
 
-  var limitNumberPins = function () {
-    var mapPinsList = document.querySelectorAll('.map__pin');
+  var onSuccess = function (data) {
+    pins = data.slice();
+  };
 
-    [].forEach.call(mapPinsList, function (element, index) {
-      if (index > window.data.Pin.count) {
-        element.style.visibility = 'hidden';
-      }
-    });
+  var removePins = function () {
+    var oldPins = window.map.element.querySelectorAll('.map__pin:not(.map__pin--main)');
+    if (oldPins) {
+      oldPins.forEach(function (item) {
+        window.map.element.removeChild(item);
+      });
+    }
   };
 
   var renderPins = function (object) {
-    if (pinsActive) {
-      var fragment = document.createDocumentFragment();
+    removePins();
+    var fragment = document.createDocumentFragment();
 
-      object.forEach(function (element) {
-        fragment.appendChild(loadPin(element));
-      });
+    object.forEach(function (element) {
+      fragment.appendChild(loadPin(element));
+    });
 
-      Pin.container.appendChild(fragment);
-      pinsActive = true;
-      limitNumberPins();
-    }
-    pinsActive = false;
+    window.map.element.appendChild(fragment);
   };
 
   var showError = function (message) {
@@ -57,18 +78,27 @@
     errorMessage.firstElementChild.textContent = message;
     Error.container.appendChild(errorMessage);
 
-    Error.container.addEventListener('mousedown', function () {
+    Error.container.addEventListener('mouseup', function () {
       errorMessage.remove();
     });
 
-    document.addEventListener('keydown', function (evt) {
+    document.addEventListener('keyup', function (evt) {
       if (evt.keyCode === ESC) {
         errorMessage.remove();
       }
     });
   };
 
-  window.showPins = function () {
-    window.load(renderPins, window.renderCards, showError);
+  window.load(onSuccess, showError);
+
+  window.pin = {
+    show: function () {
+      renderPins(pins.slice(0, PIN_COUNT));
+    },
+    data: function () {
+      return pins;
+    },
+    render: debounce(renderPins)
   };
+
 })();

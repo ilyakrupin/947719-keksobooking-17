@@ -19,6 +19,8 @@
     var newData = window.pin.data();
     var filterElements = [];
     filterElements[0] = Array.from(document.querySelector('.map__filters').children).shift();
+
+    window.card.remove();
     window.pin.render(filterData(newData, filterElements));
   };
 

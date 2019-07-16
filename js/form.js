@@ -29,14 +29,14 @@
     selectTimeIn.value = selectTimeOut.value;
   });
 
-  selectRooms.addEventListener('change', function (evt) {
-    var index = evt.target.selectedIndex;
+  selectRooms.addEventListener('change', function () {
+    var index = selectRooms.selectedIndex;
     selectCapacity.value = selectCapacity[index].value;
     selectCapacity[index].selected = true;
   });
 
-  selectCapacity.addEventListener('change', function (evt) {
-    var index = evt.target.selectedIndex;
+  selectCapacity.addEventListener('change', function () {
+    var index = selectCapacity.selectedIndex;
     selectRooms.value = selectRooms[index].value;
     selectRooms[index].selected = true;
   });

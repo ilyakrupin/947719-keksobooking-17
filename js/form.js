@@ -21,13 +21,12 @@
     inputPrice.min = inputPrice.placeholder = Types[evt.target.value];
   });
 
-  selectTimeIn.addEventListener('change', function (evt) {
-    selectTimeOut.value = evt.target.value;
-    selectTimeOut[evt.currentTarget.selectedIndex].selected = true;
+  selectTimeIn.addEventListener('change', function () {
+    selectTimeOut.value = selectTimeIn.value;
   });
 
-  selectTimeOut.addEventListener('change', function (evt) {
-    selectTimeIn.value = evt.target.value;
+  selectTimeOut.addEventListener('change', function () {
+    selectTimeIn.value = selectTimeOut.value;
   });
 
   selectRooms.addEventListener('change', function (evt) {

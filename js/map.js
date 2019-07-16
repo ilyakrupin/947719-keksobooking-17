@@ -5,7 +5,7 @@
   var map = document.querySelector('.map');
   var mainPinButton = map.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
-  var flagState;
+  var isActive;
 
   var MapLimit = {
     top: 130,
@@ -60,10 +60,10 @@
     };
 
     var onMainPinMouseMoveActive = function () {
-      if (!flagState) {
+      if (!isActive) {
         activateMap();
         mainPinButton.removeEventListener('mousemove', onMainPinMouseMoveActive);
-        flagState = true;
+        isActive = true;
       }
     };
 

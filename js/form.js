@@ -10,36 +10,48 @@
   var selectTimeIn = adForm.querySelector('#timein');
   var selectTimeOut = adForm.querySelector('#timeout');
 
-  var Types = {
+  var TYPES = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
     'palace': 10000
   };
 
-  selectType.addEventListener('change', function (evt) {
-    inputPrice.min = inputPrice.placeholder = Types[evt.target.value];
+  var ROOMS = {
+    '1': ['1'],
+    '2': ['2', '1'],
+    '3': ['3', '2', '1'],
+    '100': ['0']
+  };
+
+  selectType.addEventListener('change', function () {
+    inputPrice.min = inputPrice.placeholder = TYPES[selectType.value];
   });
 
-  selectTimeIn.addEventListener('change', function (evt) {
-    selectTimeOut.value = evt.target.value;
-    selectTimeOut[evt.currentTarget.selectedIndex].selected = true;
+  selectTimeIn.addEventListener('change', function () {
+    selectTimeOut.value = selectTimeIn.value;
   });
 
-  selectTimeOut.addEventListener('change', function (evt) {
-    selectTimeIn.value = evt.target.value;
+  selectTimeOut.addEventListener('change', function () {
+    selectTimeIn.value = selectTimeOut.value;
   });
 
-  selectRooms.addEventListener('change', function (evt) {
-    var index = evt.target.selectedIndex;
-    selectCapacity.value = selectCapacity[index].value;
-    selectCapacity[index].selected = true;
-  });
+  var onRoomsChange = function () {
+    if (selectRooms.options.length > 0) {
+      [].forEach.call(selectCapacity.options, function (item) {
+        item.selected = (ROOMS[selectRooms.value][0] === item.value) ? true : false;
+        item.disabled = (ROOMS[selectRooms.value].indexOf(item.value) >= 0) ? false : true;
+      });
+    }
+  };
 
-  selectCapacity.addEventListener('change', function (evt) {
-    var index = evt.target.selectedIndex;
+  var onCapacityChange = function () {
+    var index = selectCapacity.selectedIndex;
     selectRooms.value = selectRooms[index].value;
     selectRooms[index].selected = true;
-  });
+  };
+
+  selectCapacity.addEventListener('change', onCapacityChange);
+  selectRooms.addEventListener('change', onRoomsChange);
 
 })();

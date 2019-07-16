@@ -10,15 +10,22 @@
   var selectTimeIn = adForm.querySelector('#timein');
   var selectTimeOut = adForm.querySelector('#timeout');
 
-  var Types = {
+  var TYPES = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
     'palace': 10000
   };
 
+  var ROOMS = {
+    '1': ['1'],
+    '2': ['2', '1'],
+    '3': ['3', '2', '1'],
+    '100': ['0']
+  };
+
   selectType.addEventListener('change', function () {
-    inputPrice.min = inputPrice.placeholder = Types[selectType.value];
+    inputPrice.min = inputPrice.placeholder = TYPES[selectType.value];
   });
 
   selectTimeIn.addEventListener('change', function () {
@@ -29,16 +36,22 @@
     selectTimeIn.value = selectTimeOut.value;
   });
 
-  selectRooms.addEventListener('change', function () {
-    var index = selectRooms.selectedIndex;
-    selectCapacity.value = selectCapacity[index].value;
-    selectCapacity[index].selected = true;
-  });
+  var onRoomsChange = function () {
+    if (selectRooms.options.length > 0) {
+      [].forEach.call(selectCapacity.options, function (item) {
+        item.selected = (ROOMS[selectRooms.value][0] === item.value) ? true : false;
+        item.disabled = (ROOMS[selectRooms.value].indexOf(item.value) >= 0) ? false : true;
+      });
+    }
+  };
 
-  selectCapacity.addEventListener('change', function () {
+  var onCapacityChange = function () {
     var index = selectCapacity.selectedIndex;
     selectRooms.value = selectRooms[index].value;
     selectRooms[index].selected = true;
-  });
+  };
+
+  selectCapacity.addEventListener('change', onCapacityChange);
+  selectRooms.addEventListener('change', onRoomsChange);
 
 })();

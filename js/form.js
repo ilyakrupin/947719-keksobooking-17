@@ -17,8 +17,8 @@
     'palace': 10000
   };
 
-  selectType.addEventListener('change', function (evt) {
-    inputPrice.min = inputPrice.placeholder = Types[evt.target.value];
+  selectType.addEventListener('change', function () {
+    inputPrice.min = inputPrice.placeholder = Types[selectType.value];
   });
 
   selectTimeIn.addEventListener('change', function () {

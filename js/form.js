@@ -71,8 +71,7 @@
     }
   };
 
-  resetButton.addEventListener('click', function (evt) {
-    evt.preventDefault();
+  var onResetButtonClick = function () {
     adForm.reset();
     window.filter.reset();
     window.pin.remove();
@@ -80,6 +79,11 @@
     window.state.deactivate();
     window.map.initialPinAddress();
     window.map.initialPinCoords();
+  };
+
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    onResetButtonClick();
   });
 
   var removeSuccessMessage = function (evt) {
@@ -108,6 +112,7 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.dbquery(successHandler, errorHandler, new FormData(adForm));
+    onResetButtonClick();
   });
 
 })();

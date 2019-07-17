@@ -4,11 +4,11 @@
   var map = document.querySelector('.map');
   var mainPinButton = map.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
+  var isActive = false;
   var MapLimit = {
     TOP: 130,
     BOTTOM: 630,
   };
-
   var MainPin = {
     WIDTH: 32,
     HEIGHT: 82,
@@ -54,10 +54,10 @@
   makeMainPinBackAgain();
   MainPin.initialCoords = getPinCoords();
 
-  var onMainPinMouseMoveActive = function () {
+  var turnOn = function () {
     window.state.activate();
     window.pin.show();
-    mainPinButton.removeEventListener('mouseup', onMainPinMouseMoveActive);
+    isActive = true;
   };
 
   mainPinButton.addEventListener('mousedown', function (evtDown) {
@@ -68,6 +68,10 @@
     };
 
     var onMainPinMouseMove = function (evtMove) {
+
+      if (!isActive) {
+        turnOn();
+      }
 
       var pointsB = {
         x: evtMove.clientX,
@@ -94,16 +98,16 @@
     var onMainPinMouseUp = function () {
       document.removeEventListener('mousemove', onMainPinMouseMove);
       document.removeEventListener('mouseup', onMainPinMouseMove);
-      mainPinButton.removeEventListener('mousemove', onMainPinMouseMoveActive);
+      mainPinButton.removeEventListener('mousemove', onMainPinMouseMove);
     };
 
     document.addEventListener('mousemove', onMainPinMouseMove);
     document.addEventListener('mouseup', onMainPinMouseUp);
-    mainPinButton.addEventListener('mouseup', onMainPinMouseMoveActive);
+    mainPinButton.addEventListener('mousemove', onMainPinMouseMove);
   });
 
   window.map = {
-    element: map,
+    container: map,
     initialPinAddress: function () {
       formAddress.value = MainPin.initialCoords;
     },

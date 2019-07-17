@@ -43,15 +43,15 @@
   };
 
   var removeCard = function () {
-    var popup = window.map.element.querySelector('.popup');
+    var popup = window.map.container.querySelector('.popup');
     if (popup) {
-      window.map.element.removeChild(popup);
+      window.map.container.removeChild(popup);
     }
   };
 
   var renderCard = function (data) {
     removeCard();
-    window.map.element.appendChild(getCard(data));
+    window.map.container.appendChild(getCard(data));
   };
 
   var getCard = function (object) {

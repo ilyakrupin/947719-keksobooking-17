@@ -49,10 +49,10 @@
   };
 
   var removePins = function () {
-    var oldPins = window.map.element.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var oldPins = window.map.container.querySelectorAll('.map__pin:not(.map__pin--main)');
     if (oldPins) {
       oldPins.forEach(function (item) {
-        window.map.element.removeChild(item);
+        window.window.map.container.removeChild(item);
       });
     }
   };
@@ -65,7 +65,7 @@
       fragment.appendChild(loadPin(element));
     });
 
-    window.map.element.appendChild(fragment);
+    window.map.container.appendChild(fragment);
   };
 
   var onError = function (message) {

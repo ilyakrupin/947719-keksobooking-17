@@ -67,7 +67,7 @@
     }
   };
 
-  var onResetButtonClick = function () {
+  var resetForm = function () {
     adForm.reset();
     window.filter.reset();
     window.pin.remove();
@@ -79,7 +79,7 @@
 
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
-    onResetButtonClick();
+    resetForm();
   });
 
   var removeSuccessMessage = function (evt) {
@@ -108,6 +108,6 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.dbquery(successHandler, errorHandler, new FormData(adForm));
-    onResetButtonClick();
+    resetForm();
   });
 })();

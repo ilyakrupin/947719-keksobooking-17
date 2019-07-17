@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var formFilters = window.map.element.querySelector('.map__filters');
+  var formFilters = window.map.container.querySelector('.map__filters');
 
   var getFilterRules = function (data, filter) {
     return data.offer.type === filter.value;

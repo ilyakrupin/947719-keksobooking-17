@@ -73,7 +73,7 @@
     window.map.element.appendChild(fragment);
   };
 
-  var showError = function (message) {
+  var onError = function (message) {
     var errorMessage = Error.template.cloneNode(true);
     errorMessage.firstElementChild.textContent = message;
     Error.container.appendChild(errorMessage);
@@ -89,12 +89,13 @@
     });
   };
 
-  window.load(onSuccess, showError);
+  window.backend.dbquery(onSuccess, onError);
 
   window.pin = {
     show: function () {
       renderPins(pins.slice(0, PIN_COUNT));
     },
+    remove: removePins,
     data: function () {
       return pins;
     },

@@ -5,7 +5,6 @@
   var map = document.querySelector('.map');
   var mainPinButton = map.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
-  var isActive;
 
   var MapLimit = {
     top: 130,
@@ -14,7 +13,10 @@
 
   var MainPin = {
     width: 32,
-    height: 82
+    height: 82,
+    initialCoords: '',
+    x: 0,
+    y: 0
   };
 
   var mainPinBoundaries = {
@@ -43,28 +45,28 @@
 
   var showPinCoords = function () {
     formAddress.value = (mainPinButton.offsetLeft + MainPin.width) + ', ' + (mainPinButton.offsetTop + MainPin.height);
+    return formAddress.value;
   };
 
-  var activateMap = function () {
-    window.activateForm();
+  var makeMainPinGreatAgain = function () {
+    MainPin.x = mainPinButton.offsetLeft + MainPin.width;
+    MainPin.y = mainPinButton.offsetTop + MainPin.height;
+  };
+
+  makeMainPinGreatAgain();
+  MainPin.initialCoords = showPinCoords();
+
+  var onMainPinMouseMoveActive = function () {
+    window.state.activate();
     window.pin.show();
+    mainPinButton.removeEventListener('mouseup', onMainPinMouseMoveActive);
   };
-
-  showPinCoords();
 
   mainPinButton.addEventListener('mousedown', function (evtDown) {
 
     var pointsA = {
       x: evtDown.clientX,
       y: evtDown.clientY
-    };
-
-    var onMainPinMouseMoveActive = function () {
-      if (!isActive) {
-        activateMap();
-        mainPinButton.removeEventListener('mousemove', onMainPinMouseMoveActive);
-        isActive = true;
-      }
     };
 
     var onMainPinMouseMove = function (evtMove) {
@@ -94,15 +96,22 @@
     var onMainPinMouseUp = function () {
       document.removeEventListener('mousemove', onMainPinMouseMove);
       document.removeEventListener('mouseup', onMainPinMouseMove);
+      mainPinButton.removeEventListener('mousemove', onMainPinMouseMoveActive);
     };
 
     document.addEventListener('mousemove', onMainPinMouseMove);
     document.addEventListener('mouseup', onMainPinMouseUp);
-    mainPinButton.addEventListener('mousemove', onMainPinMouseMoveActive);
+    mainPinButton.addEventListener('mouseup', onMainPinMouseMoveActive);
   });
 
   window.map = {
-    element: map
+    element: map,
+    initialPinAddress: function () {
+      formAddress.value = MainPin.initialCoords;
+    },
+    initialPinCoords: function () {
+      mainPinButton.style.left = MainPin.x + 'px'; mainPinButton.style.top = MainPin.y + 'px';
+    }
   };
 
 })();

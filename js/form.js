@@ -74,6 +74,7 @@
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     adForm.reset();
+    window.filter.reset();
     window.pin.remove();
     window.card.remove();
     window.state.deactivate();

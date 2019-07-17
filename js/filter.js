@@ -25,4 +25,10 @@
   };
 
   formFilters.addEventListener('change', onFormFiltersChange);
+
+  window.filter = {
+    reset: function () {
+      formFilters.reset();
+    }
+  };
 })();

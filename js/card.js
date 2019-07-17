@@ -27,7 +27,7 @@
     bungalo: 'Бунгало'
   };
 
-  var defineWordEndings = function (number, nominative, genitiveSingular, genitivePlural) {
+  var getWordEndings = function (number, nominative, genitiveSingular, genitivePlural) {
     number %= 100;
 
     if (number > 14) {
@@ -55,10 +55,10 @@
 
   var renderCard = function (data) {
     removeCard();
-    window.map.element.appendChild(loadCard(data));
+    window.map.element.appendChild(getCard(data));
   };
 
-  var loadCard = function (object) {
+  var getCard = function (object) {
     var clone = template.cloneNode(true);
     var cardFeatures = clone.querySelector(classList.features);
     var cardPhotos = clone.querySelector(classList.photos);
@@ -70,7 +70,7 @@
     clone.querySelector(classList.address).textContent = object.offer.adress;
     clone.querySelector(classList.price).textContent = object.offer.price + '₽/ночь';
     clone.querySelector(classList.type).textContent = typeProperty[object.offer.type];
-    clone.querySelector(classList.capacity).textContent = object.offer.rooms + ' ' + defineWordEndings(object.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для ' + object.offer.guests + ' ' + defineWordEndings(object.offer.guests, 'гостя', 'гостей', 'гостей');
+    clone.querySelector(classList.capacity).textContent = object.offer.rooms + ' ' + getWordEndings(object.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для ' + object.offer.guests + ' ' + getWordEndings(object.offer.guests, 'гостя', 'гостей', 'гостей');
     clone.querySelector(classList.time).textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
     clone.querySelector(classList.description).textContent = object.offer.description;
 

@@ -42,7 +42,7 @@
     }
   };
 
-  var showPinCoords = function () {
+  var getPinCoords = function () {
     formAddress.value = (mainPinButton.offsetLeft + MainPin.width) + ', ' + (mainPinButton.offsetTop + MainPin.height);
     return formAddress.value;
   };
@@ -53,7 +53,7 @@
   };
 
   makeMainPinBackAgain();
-  MainPin.initialCoords = showPinCoords();
+  MainPin.initialCoords = getPinCoords();
 
   var onMainPinMouseMoveActive = function () {
     window.state.activate();
@@ -89,7 +89,7 @@
       mainPinButton.style.top = (mainPinButton.offsetTop - shift.y) + 'px';
 
       limitCoords();
-      showPinCoords();
+      getPinCoords();
     };
 
     var onMainPinMouseUp = function () {

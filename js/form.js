@@ -46,9 +46,11 @@
   };
 
   var onCapacityChange = function () {
-    var index = selectCapacity.selectedIndex;
-    selectRooms.value = selectRooms[index].value;
-    selectRooms[index].selected = true;
+    if (selectCapacity.value > selectRooms.value && selectCapacity.value !== '0') {
+      selectRooms.value = selectCapacity.value;
+    } else if (selectCapacity.value === '0') {
+      selectRooms.value = '100';
+    }
   };
 
   selectCapacity.addEventListener('change', onCapacityChange);

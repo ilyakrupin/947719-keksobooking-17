@@ -5,7 +5,6 @@
   var mainPinButton = map.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
   var pointsA = {};
-  var isActive = false;
   var MapLimit = {
     TOP: 130,
     BOTTOM: 630,
@@ -55,14 +54,7 @@
   saveMainPinCoords();
   MainPin.initialCoords = getPinCoords();
 
-  var activateMap = function () {
-    window.switch.on();
-    window.pin.show();
-    isActive = !isActive;
-  };
-
   var onMainPinMouseDown = function (evtDown) {
-    activateMap();
     pointsA = {
       x: evtDown.clientX,
       y: evtDown.clientY
@@ -91,6 +83,10 @@
   };
 
   var onDocumentMouseUp = function () {
+    if (window.map.wrap.classList.contains('map--faded')) {
+      window.switch.on();
+      window.pin.show();
+    }
     document.removeEventListener('mousemove', onDocumentMouseMove);
     document.removeEventListener('mouseup', onDocumentMouseUp);
   };
@@ -98,7 +94,7 @@
   mainPinButton.addEventListener('mousedown', onMainPinMouseDown);
 
   window.map = {
-    container: map,
+    wrap: map,
     initialPinAddress: function () {
       formAddress.value = MainPin.initialCoords;
     },

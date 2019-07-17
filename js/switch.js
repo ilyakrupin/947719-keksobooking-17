@@ -2,7 +2,7 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
-  var filters = window.map.container.querySelector('.map__filters');
+  var filters = window.map.wrap.querySelector('.map__filters');
   var filterList = filters.children;
   var adList = adForm.children;
 
@@ -12,12 +12,12 @@
   };
 
   var toggleFadeOut = function () {
-    window.map.container.classList.remove('map--faded');
+    window.map.wrap.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
   };
 
   var toggleFadeIn = function () {
-    window.map.container.classList.add('map--faded');
+    window.map.wrap.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
   };
 

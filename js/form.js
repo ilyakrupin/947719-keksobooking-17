@@ -97,18 +97,16 @@
   };
 
   var successHandler = function () {
-
     main.appendChild(successMessage);
     document.addEventListener('click', removeSuccessMessage);
     document.addEventListener('keydown', removeSuccessMessage);
   };
 
+  selectCapacity.addEventListener('change', onCapacityChange);
+  selectRooms.addEventListener('change', onRoomsChange);
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.dbquery(successHandler, errorHandler, new FormData(adForm));
   });
-
-  selectCapacity.addEventListener('change', onCapacityChange);
-  selectRooms.addEventListener('change', onRoomsChange);
 
 })();

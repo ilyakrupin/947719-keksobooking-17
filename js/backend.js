@@ -7,15 +7,14 @@
   };
   var HTTP_OK = 200;
 
-  var load = function (onSuccess, onError, data) {
+  var connect = function (onSuccess, onError, data) {
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       if (xhr.status === HTTP_OK) {
-        var xhrResponse = xhr.response;
-        onSuccess(xhrResponse);
+        onSuccess(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
@@ -30,7 +29,7 @@
     });
 
     if (data) {
-      xhr.open('POST', Url.ULOAD);
+      xhr.open('POST', Url.UPLOAD);
       xhr.send(data);
     } else {
       xhr.open('GET', Url.DOWNLOAD);
@@ -39,7 +38,7 @@
   };
 
   window.backend = {
-    dbquery: load
+    dbquery: connect
   };
 
 })();

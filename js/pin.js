@@ -4,18 +4,13 @@
   var ESC = 27;
   var PIN_COUNT = 5;
   var DEBOUNCE_INTERVAL = 500;
-
-  var pins = [];
-
   var Pin = {
-    width: 25,
-    height: 70,
-    template: document.querySelector('#pin').content.querySelector('.map__pin')
+    WIDTH: 25,
+    HEIGHT: 70
   };
-
-  var Error = {
-    template: document.querySelector('#error').content.querySelector('.error')
-  };
+  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var pins = [];
 
   var debounce = function (cb) {
     var lastTimeout = null;
@@ -36,9 +31,9 @@
   };
 
   var loadPin = function (object) {
-    var clone = Pin.template.cloneNode(true);
-    clone.style.left = (object.location.x) + 'px';
-    clone.style.top = (object.location.y - Pin.height) + 'px';
+    var clone = pinTemplate.cloneNode(true);
+    clone.style.left = (object.location.x - Pin.WIDTH) + 'px';
+    clone.style.top = (object.location.y - Pin.HEIGHT) + 'px';
     clone.firstElementChild.src = object.author.avatar;
     clone.firstElementChild.alt = object.offer.title;
 
@@ -74,7 +69,7 @@
   };
 
   var onError = function (message) {
-    var errorMessage = Error.template.cloneNode(true);
+    var errorMessage = errorTemplate.cloneNode(true);
     errorMessage.firstElementChild.textContent = message;
     Error.container.appendChild(errorMessage);
 

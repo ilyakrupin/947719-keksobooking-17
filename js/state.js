@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var filters = document.querySelector('.map__filters');
   var filterList = filters.children;
   var adForm = document.querySelector('.ad-form');

@@ -1,49 +1,48 @@
 'use strict';
 
 (function () {
-
   var map = document.querySelector('.map');
   var mainPinButton = map.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
   var MapLimit = {
-    top: 130,
-    bottom: 630,
+    TOP: 130,
+    BOTTOM: 630,
   };
 
   var MainPin = {
-    width: 32,
-    height: 82,
+    WIDTH: 32,
+    HEIGHT: 82,
     initialCoords: '',
     x: 0,
     y: 0
   };
 
-  var mainPinBoundaries = {
-    left: -MainPin.width,
-    right: map.offsetWidth - MainPin.width,
-    top: MapLimit.top - MainPin.height,
-    bottom: MapLimit.bottom - MainPin.height
+  var MainPinLimit = {
+    left: -MainPin.WIDTH,
+    right: map.offsetWidth - MainPin.WIDTH,
+    top: MapLimit.TOP - MainPin.HEIGHT,
+    bottom: MapLimit.BOTTOM - MainPin.HEIGHT
   };
 
   var limitCoords = function () {
     switch (true) {
-      case mainPinButton.offsetLeft < mainPinBoundaries.left:
-        mainPinButton.style.left = mainPinBoundaries.left + 'px';
+      case mainPinButton.offsetLeft < MainPinLimit.left:
+        mainPinButton.style.left = MainPinLimit.left + 'px';
         break;
-      case mainPinButton.offsetLeft > mainPinBoundaries.right:
-        mainPinButton.style.left = mainPinBoundaries.right + 'px';
+      case mainPinButton.offsetLeft > MainPinLimit.right:
+        mainPinButton.style.left = MainPinLimit.right + 'px';
         break;
-      case mainPinButton.offsetTop < mainPinBoundaries.top:
-        mainPinButton.style.top = mainPinBoundaries.top + 'px';
+      case mainPinButton.offsetTop < MainPinLimit.top:
+        mainPinButton.style.top = MainPinLimit.top + 'px';
         break;
-      case mainPinButton.offsetTop > mainPinBoundaries.bottom:
-        mainPinButton.style.top = mainPinBoundaries.bottom + 'px';
+      case mainPinButton.offsetTop > MainPinLimit.bottom:
+        mainPinButton.style.top = MainPinLimit.bottom + 'px';
         break;
     }
   };
 
   var getPinCoords = function () {
-    formAddress.value = (mainPinButton.offsetLeft + MainPin.width) + ', ' + (mainPinButton.offsetTop + MainPin.height);
+    formAddress.value = (mainPinButton.offsetLeft + MainPin.WIDTH) + ', ' + (mainPinButton.offsetTop + MainPin.HEIGHT);
     return formAddress.value;
   };
 
@@ -112,5 +111,4 @@
       mainPinButton.style.left = MainPin.x + 'px'; mainPinButton.style.top = MainPin.y + 'px';
     }
   };
-
 })();

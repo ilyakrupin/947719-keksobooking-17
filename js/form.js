@@ -67,19 +67,19 @@
     }
   };
 
-  var resetForm = function () {
+  var deactivateMap = function () {
     adForm.reset();
     window.filter.reset();
     window.pin.remove();
     window.card.remove();
-    window.state.deactivate();
+    window.switch.off();
     window.map.initialPinAddress();
     window.map.initialPinCoords();
   };
 
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
-    resetForm();
+    deactivateMap();
   });
 
   var removeSuccessMessage = function (evt) {
@@ -108,6 +108,6 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.dbquery(successHandler, errorHandler, new FormData(adForm));
-    resetForm();
+    deactivateMap();
   });
 })();

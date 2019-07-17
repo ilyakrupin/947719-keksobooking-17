@@ -4,6 +4,7 @@
   var map = document.querySelector('.map');
   var mainPinButton = map.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
+  var pointsA = {};
   var isActive = false;
   var MapLimit = {
     TOP: 130,
@@ -46,65 +47,55 @@
     return formAddress.value;
   };
 
-  var makeMainPinBackAgain = function () {
+  var saveMainPinCoords = function () {
     MainPin.x = mainPinButton.offsetLeft;
     MainPin.y = mainPinButton.offsetTop;
   };
 
-  makeMainPinBackAgain();
+  saveMainPinCoords();
   MainPin.initialCoords = getPinCoords();
 
-  var turnOn = function () {
-    window.state.activate();
+  var activateMap = function () {
+    window.switch.on();
     window.pin.show();
-    isActive = true;
+    isActive = !isActive;
   };
 
-  mainPinButton.addEventListener('mousedown', function (evtDown) {
-
-    var pointsA = {
+  var onMainPinMouseDown = function (evtDown) {
+    activateMap();
+    pointsA = {
       x: evtDown.clientX,
       y: evtDown.clientY
     };
+    document.addEventListener('mousemove', onDocumentMouseMove);
+    document.addEventListener('mouseup', onDocumentMouseUp);
+  };
 
-    var onMainPinMouseMove = function (evtMove) {
-
-      if (!isActive) {
-        turnOn();
-      }
-
-      var pointsB = {
-        x: evtMove.clientX,
-        y: evtMove.clientY,
-      };
-
-      var shift = {
-        x: pointsA.x - pointsB.x,
-        y: pointsA.y - pointsB.y
-      };
-
-      pointsA = {
-        x: pointsB.x,
-        y: pointsB.y
-      };
-
-      mainPinButton.style.left = (mainPinButton.offsetLeft - shift.x) + 'px';
-      mainPinButton.style.top = (mainPinButton.offsetTop - shift.y) + 'px';
-
-      limitCoords();
-      getPinCoords();
+  var onDocumentMouseMove = function (evtMove) {
+    var pointsB = {
+      x: evtMove.clientX,
+      y: evtMove.clientY,
     };
-
-    var onMainPinMouseUp = function () {
-      document.removeEventListener('mousemove', onMainPinMouseMove);
-      document.removeEventListener('mouseup', onMainPinMouseMove);
-      mainPinButton.removeEventListener('mousemove', onMainPinMouseMove);
+    var shift = {
+      x: pointsA.x - pointsB.x,
+      y: pointsA.y - pointsB.y
     };
+    pointsA = {
+      x: pointsB.x,
+      y: pointsB.y
+    };
+    mainPinButton.style.left = (mainPinButton.offsetLeft - shift.x) + 'px';
+    mainPinButton.style.top = (mainPinButton.offsetTop - shift.y) + 'px';
+    limitCoords();
+    getPinCoords();
+  };
 
-    document.addEventListener('mousemove', onMainPinMouseMove);
-    document.addEventListener('mouseup', onMainPinMouseUp);
-    mainPinButton.addEventListener('mousemove', onMainPinMouseMove);
-  });
+  var onDocumentMouseUp = function () {
+    document.removeEventListener('mousemove', onDocumentMouseMove);
+    document.removeEventListener('mouseup', onDocumentMouseUp);
+  };
+
+  mainPinButton.addEventListener('mousedown', onMainPinMouseDown);
 
   window.map = {
     container: map,

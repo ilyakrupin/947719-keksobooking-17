@@ -39,8 +39,8 @@
   var onRoomsChange = function () {
     if (selectRooms.options.length > 0) {
       [].forEach.call(selectCapacity.options, function (item) {
-        item.selected = (ROOMS[selectRooms.value][0] === item.value) ? true : false;
-        item.disabled = (ROOMS[selectRooms.value].indexOf(item.value) >= 0) ? false : true;
+        item.selected = (ROOMS[selectRooms.value][0] === item.value);
+        item.disabled = !(ROOMS[selectRooms.value].indexOf(item.value) >= 0);
       });
     }
   };

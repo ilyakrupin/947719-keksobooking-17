@@ -5,7 +5,6 @@
   var map = document.querySelector('.map');
   var mainPinButton = map.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
-
   var MapLimit = {
     top: 130,
     bottom: 630,
@@ -48,12 +47,12 @@
     return formAddress.value;
   };
 
-  var makeMainPinGreatAgain = function () {
-    MainPin.x = mainPinButton.offsetLeft + MainPin.width;
-    MainPin.y = mainPinButton.offsetTop + MainPin.height;
+  var makeMainPinBackAgain = function () {
+    MainPin.x = mainPinButton.offsetLeft;
+    MainPin.y = mainPinButton.offsetTop;
   };
 
-  makeMainPinGreatAgain();
+  makeMainPinBackAgain();
   MainPin.initialCoords = showPinCoords();
 
   var onMainPinMouseMoveActive = function () {

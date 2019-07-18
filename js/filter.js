@@ -15,6 +15,10 @@
     });
   };
 
+  var resetFilter = function () {
+    formFilters.reset();
+  };
+
   var onFormFiltersChange = function () {
     var newData = window.pin.data();
     var filterElements = [];
@@ -27,8 +31,6 @@
   formFilters.addEventListener('change', onFormFiltersChange);
 
   window.filter = {
-    reset: function () {
-      formFilters.reset();
-    }
+    reset: resetFilter
   };
 })();

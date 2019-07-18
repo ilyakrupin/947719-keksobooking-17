@@ -64,7 +64,7 @@
     clone.querySelector(ClassList.avatar).src = object.author.avatar;
     clone.querySelector(ClassList.title).textContent = object.offer.title;
     clone.querySelector(ClassList.address).textContent = object.offer.adress;
-    clone.querySelector(ClassList.price).textContent = object.offer.price + '₽/ночь';
+    clone.querySelector(ClassList.price).textContent = object.offer.price + '\u20bd/ночь';
     clone.querySelector(ClassList.type).textContent = TypeProperty[object.offer.type];
     clone.querySelector(ClassList.capacity).textContent = object.offer.rooms + ' ' + getWordEndings(object.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для ' + object.offer.guests + ' ' + getWordEndings(object.offer.guests, 'гостя', 'гостей', 'гостей');
     clone.querySelector(ClassList.time).textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;

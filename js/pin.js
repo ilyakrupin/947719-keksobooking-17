@@ -48,6 +48,10 @@
     pins = data.slice();
   };
 
+  var getData = function () {
+    return pins;
+  };
+
   var removePins = function () {
     var oldPins = window.map.wrap.querySelectorAll('button[type="button"]');
     if (oldPins) {
@@ -61,11 +65,17 @@
     removePins();
     var fragment = document.createDocumentFragment();
 
-    object.forEach(function (element) {
-      fragment.appendChild(loadPin(element));
+    object.forEach(function (element, index) {
+      if (index <= PIN_COUNT) {
+        fragment.appendChild(loadPin(element));
+      }
     });
 
     window.map.wrap.appendChild(fragment);
+  };
+
+  var showPins = function () {
+    renderPins(pins);
   };
 
   var onError = function (message) {
@@ -87,14 +97,10 @@
   window.backend.dbquery(onSuccess, onError);
 
   window.pin = {
-    show: function () {
-      renderPins(pins.slice(0, PIN_COUNT));
-    },
-    remove: removePins,
-    data: function () {
-      return pins;
-    },
-    render: debounce(renderPins)
+    data: getData,
+    render: debounce(renderPins),
+    show: showPins,
+    remove: removePins
   };
 
 })();

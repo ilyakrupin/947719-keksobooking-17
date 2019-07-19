@@ -3,21 +3,7 @@
 (function () {
   var template = document.querySelector('#card').content.querySelector('.map__card');
   var ESC = 27;
-  var ClassList = {
-    avatar: '.popup__avatar',
-    title: '.popup__title',
-    address: '.popup__text--address',
-    price: '.popup__text--price',
-    type: '.popup__type',
-    capacity: '.popup__text--capacity',
-    time: '.popup__text--time',
-    features: '.popup__features',
-    description: '.popup__description',
-    photos: '.popup__photos',
-    photo: '.popup__photo',
-    button: '.popup__close'
-  };
-  var TypeProperty = {
+  var Property = {
     palace: 'Дворец',
     flat: 'Квартира',
     house: 'Дом',
@@ -56,25 +42,29 @@
 
   var getCard = function (object) {
     var clone = template.cloneNode(true);
-    var cardFeatures = clone.querySelector(ClassList.features);
-    var cardPhotos = clone.querySelector(ClassList.photos);
-    var cardPhoto = cardPhotos.querySelector(ClassList.photo);
-    var closeButton = clone.querySelector(ClassList.button);
+    var cardFeatures = clone.querySelector('.popup__features');
+    var cardPhotos = clone.querySelector('.popup__photos');
+    var cardPhoto = cardPhotos.querySelector('.popup__photo');
+    var closeButton = clone.querySelector('.popup__close');
 
-    clone.querySelector(ClassList.avatar).src = object.author.avatar;
-    clone.querySelector(ClassList.title).textContent = object.offer.title;
-    clone.querySelector(ClassList.address).textContent = object.offer.adress;
-    clone.querySelector(ClassList.price).textContent = object.offer.price + '\u20bd/ночь';
-    clone.querySelector(ClassList.type).textContent = TypeProperty[object.offer.type];
-    clone.querySelector(ClassList.capacity).textContent = object.offer.rooms + ' ' + getWordEndings(object.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для ' + object.offer.guests + ' ' + getWordEndings(object.offer.guests, 'гостя', 'гостей', 'гостей');
-    clone.querySelector(ClassList.time).textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
-    clone.querySelector(ClassList.description).textContent = object.offer.description;
+    clone.querySelector('.popup__avatar').src = object.author.avatar;
+    clone.querySelector('.popup__title').textContent = object.offer.title;
+    clone.querySelector('.popup__text--address').textContent = object.offer.adress;
+    clone.querySelector('.popup__text--price').textContent = object.offer.price + '\u20bd/ночь';
+    clone.querySelector('.popup__type').textContent = Property[object.offer.type];
+    clone.querySelector('.popup__text--capacity').textContent = object.offer.rooms + ' ' + getWordEndings(object.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для ' + object.offer.guests + ' ' + getWordEndings(object.offer.guests, 'гостя', 'гостей', 'гостей');
+    clone.querySelector('.popup__text--time').textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
+    clone.querySelector('.popup__description').textContent = object.offer.description;
 
-    object.offer.features.forEach(function (element) {
-      var featureItem = document.createElement('li');
-      featureItem.className = 'popup__feature popup__feature--' + element;
-      cardFeatures.appendChild(featureItem);
-    });
+    if (object.offer.features.length > 0) {
+      object.offer.features.forEach(function (element) {
+        var featureItem = document.createElement('li');
+        featureItem.className = 'popup__feature popup__feature--' + element;
+        cardFeatures.appendChild(featureItem);
+      });
+    } else {
+      cardFeatures.remove();
+    }
 
     object.offer.photos.forEach(function (element) {
       var cloneCardPhoto = cardPhoto.cloneNode(true);

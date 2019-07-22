@@ -40,5 +40,4 @@
   window.backend = {
     dbquery: connect
   };
-
 })();

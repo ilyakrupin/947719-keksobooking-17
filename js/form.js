@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
   var selectType = adForm.querySelector('#type');
@@ -16,22 +15,19 @@
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorMessage = errorTemplate.cloneNode(true);
   var errorButton = errorTemplate.querySelector('.error__button');
-
+  var ESC = 27;
   var TYPES = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
     'palace': 10000
   };
-
   var ROOMS = {
     '1': ['1'],
     '2': ['2', '1'],
     '3': ['3', '2', '1'],
     '100': ['0']
   };
-
-  var ESC = 27;
 
   selectType.addEventListener('change', function () {
     inputPrice.min = inputPrice.placeholder = TYPES[selectType.value];
@@ -71,19 +67,19 @@
     }
   };
 
-  var onResetButtonClick = function () {
+  var deactivateMap = function () {
     adForm.reset();
     window.filter.reset();
     window.pin.remove();
     window.card.remove();
-    window.state.deactivate();
+    window.switch.off();
     window.map.initialPinAddress();
     window.map.initialPinCoords();
   };
 
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
-    onResetButtonClick();
+    deactivateMap();
   });
 
   var removeSuccessMessage = function (evt) {
@@ -112,7 +108,6 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.dbquery(successHandler, errorHandler, new FormData(adForm));
-    onResetButtonClick();
+    deactivateMap();
   });
-
 })();

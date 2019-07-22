@@ -51,6 +51,7 @@
     MainPin.y = mainPinButton.offsetTop;
   };
 
+  window.switch.off();
   saveMainPinCoords();
   MainPin.initialCoords = getPinCoords();
 

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var formFilters = window.map.wrap.querySelector('.map__filters');
+  var formFilters = document.querySelector('.map__filters');
   var priceMap = {
     'low': {
       start: 0,

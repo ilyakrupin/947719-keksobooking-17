@@ -54,6 +54,7 @@
 
   var removePins = function () {
     var oldPins = window.map.wrap.querySelectorAll('button[type="button"]');
+
     if (oldPins) {
       oldPins.forEach(function (item) {
         window.window.map.wrap.removeChild(item);

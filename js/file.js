@@ -6,9 +6,26 @@
   var form = document.querySelector('.ad-form');
   var avatarChooser = form.querySelector('#avatar');
   var galleryChooser = form.querySelector('#images');
+  var avatarPreviewContainer = form.querySelector('.ad-form-header__preview');
   var avatarPreview = form.querySelector('.ad-form-header__preview > img');
   var galleryPreview = form.querySelector('.ad-form__photo');
+  var saveAvatarPreview = avatarPreview.cloneNode();
+  var saveGalleryPreview = galleryPreview.cloneNode();
+
   var galleryContainer = document.querySelector('.ad-form__photo-container');
+
+  window.resetFile = function () {
+    avatarPreviewContainer.removeChild(avatarPreview);
+    var galleryChildren = galleryContainer.querySelectorAll('.ad-form__photo');
+    if (galleryChildren) {
+      [].forEach.call(galleryChildren, function (element) {
+        element.remove();
+      });
+    }
+
+    avatarPreviewContainer.appendChild(saveAvatarPreview);
+    galleryContainer.appendChild(saveGalleryPreview);
+  };
 
   var uploadPicture = function (fileChooser) {
     fileChooser.addEventListener('change', function () {
@@ -24,7 +41,6 @@
           avatarPreview.src = reader.result;
           avatarPreview.width = '70';
           avatarPreview.height = '70';
-          avatarPreview.alt = 'Аватарка пользователя';
           avatarPreview.style.borderRadius = '4px';
           avatarPreview.style.position = 'relative';
           avatarPreview.style.right = '15px';

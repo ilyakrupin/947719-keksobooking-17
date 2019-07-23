@@ -27,6 +27,7 @@
         element.remove();
       });
       galleryContainer.appendChild(oldGallery);
+      oldGallery = null;
     }
 
   };
@@ -44,6 +45,9 @@
         var reader = new FileReader();
 
         reader.addEventListener('load', function () {
+          if (newAvatar) {
+            newAvatar.remove();
+          }
           newAvatar = document.createElement('img');
           newAvatar.src = reader.result;
           newAvatar.width = '70';
@@ -51,7 +55,11 @@
           newAvatar.style.borderRadius = '4px';
           newAvatar.style.position = 'relative';
           newAvatar.style.right = '15px';
-          oldAvatar = avatarContainer.removeChild(avatarPreview);
+
+          if (!oldAvatar) {
+            oldAvatar = avatarContainer.removeChild(avatarPreview);
+          }
+
           avatarContainer.appendChild(newAvatar);
         });
 
@@ -95,7 +103,10 @@
         renderPreview(file);
       });
 
-      oldGallery = galleryContainer.removeChild(galleryPreview);
+      if (!oldGallery) {
+        oldGallery = galleryContainer.removeChild(galleryPreview);
+      }
+
       galleryContainer.appendChild(fragment);
     });
   };

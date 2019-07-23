@@ -41,6 +41,14 @@
     }
   };
 
+  var initialPinAddress = function () {
+    formAddress.value = MainPin.initialCoords;
+  };
+
+  var initialPinCoords = function () {
+    mainPinButton.style.left = MainPin.x + 'px'; mainPinButton.style.top = MainPin.y + 'px';
+  };
+
   var getPinCoords = function () {
     formAddress.value = (mainPinButton.offsetLeft + MainPin.WIDTH) + ', ' + (mainPinButton.offsetTop + MainPin.HEIGHT);
     return formAddress.value;
@@ -51,6 +59,7 @@
     MainPin.y = mainPinButton.offsetTop;
   };
 
+  window.switch.off();
   saveMainPinCoords();
   MainPin.initialCoords = getPinCoords();
 
@@ -95,11 +104,7 @@
 
   window.map = {
     wrap: map,
-    initialPinAddress: function () {
-      formAddress.value = MainPin.initialCoords;
-    },
-    initialPinCoords: function () {
-      mainPinButton.style.left = MainPin.x + 'px'; mainPinButton.style.top = MainPin.y + 'px';
-    }
+    initialPinAddress: initialPinAddress,
+    initialPinCoords: initialPinCoords
   };
 })();

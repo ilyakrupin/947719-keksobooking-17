@@ -1,23 +1,28 @@
 'use strict';
 
 (function () {
+  var mapFaded = document.querySelector('.map--faded');
   var adForm = document.querySelector('.ad-form');
-  var filters = window.map.wrap.querySelector('.map__filters');
+  var filters = document.querySelector('.map__filters');
   var filterList = filters.children;
   var adList = adForm.children;
 
   var toggleTag = function (status) {
-    filterList.disabled = status;
-    adList.disabled = status;
+    [].forEach.call(filterList, function (element) {
+      element.disabled = status;
+    });
+    [].forEach.call(adList, function (element) {
+      element.disabled = status;
+    });
   };
 
   var toggleFadeOut = function () {
-    window.map.wrap.classList.remove('map--faded');
+    mapFaded.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
   };
 
   var toggleFadeIn = function () {
-    window.map.wrap.classList.add('map--faded');
+    mapFaded.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
   };
 

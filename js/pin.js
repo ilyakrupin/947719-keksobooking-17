@@ -52,15 +52,6 @@
     return pins;
   };
 
-  var removePins = function () {
-    var oldPins = window.map.wrap.querySelectorAll('button[type="button"]');
-    if (oldPins) {
-      oldPins.forEach(function (item) {
-        window.window.map.wrap.removeChild(item);
-      });
-    }
-  };
-
   var renderPins = function (object) {
     removePins();
     var fragment = document.createDocumentFragment();
@@ -72,6 +63,16 @@
     });
 
     window.map.wrap.appendChild(fragment);
+  };
+
+  var removePins = function () {
+    var oldPins = window.map.wrap.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    if (oldPins) {
+      oldPins.forEach(function (item) {
+        window.window.map.wrap.removeChild(item);
+      });
+    }
   };
 
   var showPins = function () {

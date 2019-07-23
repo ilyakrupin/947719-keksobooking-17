@@ -14,6 +14,7 @@
   var oldAvatar;
   var newGallery;
   var oldGallery;
+  var dragSourceEl = null;
 
   window.resetFile = function () {
     if (newAvatar) {
@@ -68,6 +69,24 @@
     });
   };
 
+  var onImgDragStart = function (evt) {
+    dragSourceEl = evt.target;
+    evt.dataTransfer.effectAllowed = 'move';
+    evt.dataTransfer.setData('src', dragSourceEl.src);
+  };
+
+  var onImgDragOver = function (evt) {
+    evt.preventDefault();
+  };
+
+  var onImgDrop = function (evt) {
+    var dragTargetEl = evt.target;
+    if (dragSourceEl !== dragTargetEl) {
+      dragSourceEl.src = dragTargetEl.src;
+      dragTargetEl.src = evt.dataTransfer.getData('src');
+    }
+  };
+
   var uploadGallery = function (fileChooser) {
     fileChooser.addEventListener('change', function () {
       var files = Array.from(fileChooser.files);
@@ -79,7 +98,12 @@
         newImage.width = '70';
         newImage.height = '70';
         newImage.alt = 'Фотография жилья';
+        newImage.draggable = true;
         newImage.style.borderRadius = '4px';
+
+        newImage.addEventListener('dragstart', onImgDragStart);
+        newImage.addEventListener('dragover', onImgDragOver);
+        newImage.addEventListener('drop', onImgDrop);
 
         var fileName = thisFile.name.toLowerCase();
         var matches = FILE_TYPES.some(function (it) {

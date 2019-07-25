@@ -74,6 +74,7 @@
     window.pin.remove();
     window.card.remove();
     window.switch.off();
+    window.file.reset();
     window.map.initialPinAddress();
     window.map.initialPinCoords();
   };

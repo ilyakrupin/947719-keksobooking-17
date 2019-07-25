@@ -95,6 +95,7 @@
     if (window.map.wrap.classList.contains('map--faded')) {
       window.switch.on();
       window.pin.show();
+      window.file.activate();
     }
     document.removeEventListener('mousemove', onDocumentMouseMove);
     document.removeEventListener('mouseup', onDocumentMouseUp);

@@ -4,16 +4,16 @@
 
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var form = document.querySelector('.ad-form');
+  var defaultAvatar;
   var avatarInput = form.querySelector('#avatar');
-  var photoInput = form.querySelector('#images');
   var avatarContainer = form.querySelector('.ad-form-header__preview');
-  var imageContainer = form.querySelector('.ad-form__photo');
   var avatarImage = form.querySelector('.ad-form-header__preview > img');
+  var defaultPhoto;
+  var photoInput = form.querySelector('#images');
+  var photoContainer = form.querySelector('.ad-form__photo');
+  var newPhotoContainer;
   var galleryContainer = document.querySelector('.ad-form__photo-container');
-  var oldAvatar;
-  var oldPhoto;
-  var newImageContainer;
-  var dragSourceEl;
+  var sourceElement;
 
   var dropAreaHeader = form.querySelector('.ad-form__field');
   var dropZoneHeader = dropAreaHeader.querySelector('.ad-form-header__drop-zone');
@@ -54,20 +54,20 @@
   };
 
   var resetFile = function () {
-    if (oldAvatar) {
+    if (defaultAvatar) {
       avatarImage.remove();
       avatarContainer.style.padding = '0 15px';
-      avatarContainer.appendChild(oldAvatar);
+      avatarContainer.appendChild(defaultAvatar);
     }
 
-    if (newImageContainer) {
+    if (newPhotoContainer) {
       var galleryChildren = galleryContainer.querySelectorAll('.ad-form__photo');
       [].forEach.call(galleryChildren, function (element) {
         element.remove();
       });
-      if (oldPhoto) {
-        galleryContainer.appendChild(oldPhoto);
-        oldPhoto = null;
+      if (defaultPhoto) {
+        galleryContainer.appendChild(defaultPhoto);
+        defaultPhoto = null;
       }
     }
 
@@ -83,26 +83,25 @@
     photoInput.removeEventListener('change', onPhotoInputChange);
   };
 
-  var onImgDragStart = function (evt) {
-    dragSourceEl = evt.target;
+  var onImageDragStart = function (evt) {
+    sourceElement = evt.target;
     evt.dataTransfer.effectAllowed = 'move';
-    evt.dataTransfer.setData('src', dragSourceEl.src);
+    evt.dataTransfer.setData('src', sourceElement.src);
   };
-  var onImgDragOver = function (evt) {
+  var onImageDragOver = function (evt) {
     evt.preventDefault();
   };
-  var onImgDrop = function (evt) {
-    var dragTargetEl = evt.target;
-    if (dragSourceEl !== dragTargetEl) {
-      dragSourceEl.src = dragTargetEl.src;
-      dragTargetEl.src = evt.dataTransfer.getData('src');
+  var onImageDrop = function (evt) {
+    var targetElement = evt.target;
+    if (sourceElement !== targetElement) {
+      sourceElement.src = targetElement.src;
+      targetElement.src = evt.dataTransfer.getData('src');
     }
   };
 
   var getAvatar = function (avatar) {
     var reader = new FileReader();
     var newAvatar = document.createElement('img');
-
     reader.addEventListener('load', function () {
       newAvatar.width = '70';
       newAvatar.height = '70';
@@ -130,14 +129,13 @@
 
   var onAvatarInputChange = function () {
     var match = getFilesData(avatarInput.files) || getFilesData(arguments[0]);
-
+    avatarInput.value = null;
     if (match) {
-      if (!oldAvatar) {
-        oldAvatar = avatarContainer.removeChild(avatarImage);
+      if (!defaultAvatar) {
+        defaultAvatar = avatarContainer.removeChild(avatarImage);
       } else {
-        oldAvatar.remove();
+        defaultAvatar.remove();
       }
-
       avatarContainer.style.padding = '0';
       avatarImage.remove();
       avatarImage = avatarContainer.appendChild(getAvatar(match[0]));
@@ -147,7 +145,6 @@
   var getPhoto = function (photo) {
     var reader = new FileReader();
     var newImage = document.createElement('img');
-
     reader.addEventListener('load', function () {
       newImage.src = reader.result;
       newImage.width = '70';
@@ -155,9 +152,9 @@
       newImage.alt = 'Фотография жилья';
       newImage.draggable = true;
       newImage.style.borderRadius = '5px';
-      newImage.addEventListener('dragstart', onImgDragStart);
-      newImage.addEventListener('dragover', onImgDragOver);
-      newImage.addEventListener('drop', onImgDrop);
+      newImage.addEventListener('dragstart', onImageDragStart);
+      newImage.addEventListener('dragover', onImageDragOver);
+      newImage.addEventListener('drop', onImageDrop);
     });
     reader.readAsDataURL(photo);
 
@@ -166,17 +163,16 @@
 
   var onPhotoInputChange = function () {
     var matches = getFilesData(photoInput.files) || getFilesData(arguments[0]);
+    photoInput.value = null;
     var fragment = document.createDocumentFragment();
-
     if (matches) {
-      if (!oldPhoto) {
-        oldPhoto = galleryContainer.removeChild(imageContainer);
+      if (!defaultPhoto) {
+        defaultPhoto = galleryContainer.removeChild(photoContainer);
       }
-
       matches.forEach(function (file) {
-        newImageContainer = imageContainer.cloneNode();
-        newImageContainer.appendChild(getPhoto(file));
-        fragment.appendChild(newImageContainer);
+        newPhotoContainer = photoContainer.cloneNode();
+        newPhotoContainer.appendChild(getPhoto(file));
+        fragment.appendChild(newPhotoContainer);
       });
     }
     galleryContainer.appendChild(fragment);

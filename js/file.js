@@ -13,40 +13,61 @@
   var oldAvatar;
   var newImageContainer;
   var oldPhoto;
-  var dragSourceEl = null;
+  var dragSourceEl;
 
+  var dropAreaHeader = form.querySelector('.ad-form__field');
+  var dropZoneHeader = dropAreaHeader.querySelector('.ad-form-header__drop-zone');
   var dropArea = form.querySelector('.ad-form__upload');
   var dropZone = dropArea.querySelector('.ad-form__drop-zone');
-  var dragStyle = dropZone.style.border;
+  var dropZoneHeaderStyle = dropZoneHeader.style.border;
+  var dropZoneStyle = dropZone.style.border;
 
   var onDragEnter = function (evt) {
     evt.preventDefault();
   };
-
   var onDragLeave = function (evt) {
     evt.preventDefault();
-    dropZone.style.border = dragStyle;
+    dropZone.style.border = dropZoneStyle;
   };
-
   var onDragOver = function (evt) {
     evt.preventDefault();
     dropZone.style.border = 'solid 1px #ff6d51';
   };
-
-  var onDrop = function (evt) {
+  var onDropAreaDrop = function (evt) {
     evt.preventDefault();
-    dropZone.style.border = dragStyle;
+    dropZone.style.border = dropZoneStyle;
     onPhotoInputChange(evt.dataTransfer.files);
+  };
+
+  var onDropAreaHeaderLeave = function (evt) {
+    evt.preventDefault();
+    dropZoneHeader.style.border = dropZoneHeaderStyle;
+  };
+  var onDropAreaHeaderDragOver = function (evt) {
+    evt.preventDefault();
+    dropZoneHeader.style.border = 'solid 1px #ff6d51';
+  };
+  var onDropAreaHeaderDrop = function (evt) {
+    evt.preventDefault();
+    dropZoneHeader.style.border = dropZoneHeaderStyle;
+    onAvatarInputChange(evt.dataTransfer.files);
   };
 
   dropArea.addEventListener('dragenter', onDragEnter);
   dropArea.addEventListener('dragleave', onDragLeave);
   dropArea.addEventListener('dragover', onDragOver);
-  dropArea.addEventListener('drop', onDrop);
+  dropArea.addEventListener('drop', onDropAreaDrop);
+
+  dropAreaHeader.addEventListener('dragenter', onDragEnter);
+  dropAreaHeader.addEventListener('dragleave', onDropAreaHeaderLeave);
+  dropAreaHeader.addEventListener('dragover', onDropAreaHeaderDragOver);
+  dropAreaHeader.addEventListener('drop', onDropAreaHeaderDrop);
 
   window.resetFile = function () {
 
-    avatarContainer.replaceChild(oldAvatar, avatarImage);
+    avatarImage.remove();
+    avatarContainer.style.padding = '0 15px';
+    avatarContainer.appendChild(oldAvatar);
 
     if (newImageContainer) {
       var galleryChildren = galleryContainer.querySelectorAll('.ad-form__photo');
@@ -87,27 +108,33 @@
 
   var getAvatar = function (avatar) {
     var reader = new FileReader();
+    var newAvatar = document.createElement('img');
 
     reader.addEventListener('load', function () {
-      avatarImage.width = '70';
-      avatarImage.height = '70';
-      avatarImage.style.borderRadius = '4px';
-      avatarImage.style.position = 'relative';
-      avatarImage.style.right = '15px';
-      avatarImage.src = reader.result;
+      newAvatar.width = '70';
+      newAvatar.height = '70';
+      newAvatar.style.borderRadius = '5px';
+      newAvatar.src = reader.result;
     });
     reader.readAsDataURL(avatar);
 
-    return avatarImage;
+    return newAvatar;
   };
 
   var onAvatarInputChange = function () {
-    var matches = getFiles(arguments[0]);
+    var match = getFiles(arguments[0]);
 
-    if (matches) {
-      oldAvatar = avatarContainer.replaceChild(getAvatar(matches[0]), avatarImage);
+    if (match.length > 0) {
+      if (!oldAvatar) {
+        oldAvatar = avatarContainer.removeChild(avatarImage);
+      } else {
+        oldAvatar.remove();
+      }
+
+      avatarContainer.style.padding = '0';
+      avatarImage.remove();
+      avatarImage = avatarContainer.appendChild(getAvatar(match[0]));
     }
-
   };
 
   var getPhoto = function (photo) {
@@ -120,7 +147,7 @@
       newImage.height = '70';
       newImage.alt = 'Фотография жилья';
       newImage.draggable = true;
-      newImage.style.borderRadius = '4px';
+      newImage.style.borderRadius = '5px';
       newImage.addEventListener('dragstart', onImgDragStart);
       newImage.addEventListener('dragover', onImgDragOver);
       newImage.addEventListener('drop', onImgDrop);
@@ -134,18 +161,17 @@
     var matches = getFiles(arguments[0]);
     var fragment = document.createDocumentFragment();
 
-    if (matches) {
+    if (matches.length > 0) {
+      if (!oldPhoto) {
+        oldPhoto = galleryContainer.removeChild(imageContainer);
+      }
+
       matches.forEach(function (file) {
         newImageContainer = imageContainer.cloneNode();
         newImageContainer.appendChild(getPhoto(file));
         fragment.appendChild(newImageContainer);
       });
     }
-
-    if (!oldPhoto) {
-      oldPhoto = galleryContainer.removeChild(imageContainer);
-    }
-
     galleryContainer.appendChild(fragment);
   };
 

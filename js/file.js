@@ -93,7 +93,7 @@
 
     return files.filter(function (file) {
       return FILE_TYPES.some(function (it) {
-        return file.name.endsWith(it);
+        return file.name.toLowerCase().endsWith(it);
       });
     });
   };
@@ -113,10 +113,14 @@
     return newAvatar;
   };
 
-  var onAvatarInputChange = function () {
-    var match = getFiles(avatarInput.files);
+  var getFileData = function (data) {
+    return (getFiles(data).length === 0) ? false : getFiles(data);
+  };
 
-    if (match.length > 0) {
+  var onAvatarInputChange = function () {
+    var match = getFileData(avatarInput.files) || getFileData(arguments[0]);
+
+    if (match) {
       if (!oldAvatar) {
         oldAvatar = avatarContainer.removeChild(avatarImage);
       } else {
@@ -137,7 +141,6 @@
       avatarImage.remove();
       avatarImage = avatarContainer.appendChild(getAvatar(match[0]));
     }
-
   };
 
   var getPhoto = function (photo) {

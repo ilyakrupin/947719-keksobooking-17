@@ -70,6 +70,17 @@
         oldPhoto = null;
       }
     }
+
+    dropAreaHeader.removeEventListener('dragenter', onDragEnter);
+    dropAreaHeader.removeEventListener('dragleave', onDropAreaHeaderLeave);
+    dropAreaHeader.removeEventListener('dragover', onDropAreaHeaderDragOver);
+    dropAreaHeader.removeEventListener('drop', onDropAreaHeaderDrop);
+    dropArea.removeEventListener('dragenter', onDragEnter);
+    dropArea.removeEventListener('dragleave', onDragLeave);
+    dropArea.removeEventListener('dragover', onDragOver);
+    dropArea.removeEventListener('drop', onDropAreaDrop);
+    avatarInput.removeEventListener('change', onAvatarInputChange);
+    photoInput.removeEventListener('change', onPhotoInputChange);
   };
 
   var onImgDragStart = function (evt) {
@@ -88,16 +99,6 @@
     }
   };
 
-  var getFiles = function (photoFiles) {
-    var files = Array.from(photoFiles);
-
-    return files.filter(function (file) {
-      return FILE_TYPES.some(function (it) {
-        return file.name.toLowerCase().endsWith(it);
-      });
-    });
-  };
-
   var getAvatar = function (avatar) {
     var reader = new FileReader();
     var newAvatar = document.createElement('img');
@@ -113,24 +114,24 @@
     return newAvatar;
   };
 
-  var getFileData = function (data) {
+  var getFiles = function (photoFiles) {
+    var files = Array.from(photoFiles);
+
+    return files.filter(function (file) {
+      return FILE_TYPES.some(function (it) {
+        return file.name.toLowerCase().endsWith(it);
+      });
+    });
+  };
+
+  var getFilesData = function (data) {
     return (getFiles(data).length === 0) ? false : getFiles(data);
   };
 
   var onAvatarInputChange = function () {
-    var match = getFileData(avatarInput.files) || getFileData(arguments[0]);
+    var match = getFilesData(avatarInput.files) || getFilesData(arguments[0]);
 
     if (match) {
-      if (!oldAvatar) {
-        oldAvatar = avatarContainer.removeChild(avatarImage);
-      } else {
-        oldAvatar.remove();
-      }
-
-      avatarContainer.style.padding = '0';
-      avatarImage.remove();
-      avatarImage = avatarContainer.appendChild(getAvatar(match[0]));
-    } else if (arguments[0].length > 0) {
       if (!oldAvatar) {
         oldAvatar = avatarContainer.removeChild(avatarImage);
       } else {
@@ -164,10 +165,10 @@
   };
 
   var onPhotoInputChange = function () {
-    var matches = getFiles(photoInput.files);
+    var matches = getFilesData(photoInput.files) || getFilesData(arguments[0]);
     var fragment = document.createDocumentFragment();
 
-    if (matches.length > 0) {
+    if (matches) {
       if (!oldPhoto) {
         oldPhoto = galleryContainer.removeChild(imageContainer);
       }

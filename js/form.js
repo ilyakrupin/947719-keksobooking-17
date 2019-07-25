@@ -69,7 +69,6 @@
 
   var deactivateMap = function () {
     adForm.reset();
-    window.resetFile();
     window.filter.reset();
     window.pin.remove();
     window.card.remove();

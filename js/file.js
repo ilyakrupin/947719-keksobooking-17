@@ -15,41 +15,41 @@
   var galleryContainer = document.querySelector('.ad-form__photo-container');
   var sourceElement;
 
-  var dropAreaHeader = form.querySelector('.ad-form__field');
-  var dropZoneHeader = dropAreaHeader.querySelector('.ad-form-header__drop-zone');
-  var dropArea = form.querySelector('.ad-form__upload');
-  var dropZone = dropArea.querySelector('.ad-form__drop-zone');
-  var dropZoneHeaderStyle = dropZoneHeader.style.border;
-  var dropZoneStyle = dropZone.style.border;
+  var dropAreaTop = form.querySelector('.ad-form__field');
+  var dropZoneTop = dropAreaTop.querySelector('.ad-form-header__drop-zone');
+  var dropZoneTopStyle = dropZoneTop.style.border;
+  var dropAreaBottom = form.querySelector('.ad-form__upload');
+  var dropZoneBottom = dropAreaBottom.querySelector('.ad-form__drop-zone');
+  var dropZoneBottomStyle = dropZoneBottom.style.border;
 
-  var onDragEnter = function (evt) {
+  var onDropAreaTopDragEnter = function (evt) {
     evt.preventDefault();
   };
-  var onDragLeave = function (evt) {
+  var onDropAreaBottomDragLeave = function (evt) {
     evt.preventDefault();
-    dropZone.style.border = dropZoneStyle;
+    dropZoneBottom.style.border = dropZoneBottomStyle;
   };
-  var onDragOver = function (evt) {
+  var onDropAreaBottomDragOver = function (evt) {
     evt.preventDefault();
-    dropZone.style.border = 'solid 1px #ff6d51';
+    dropZoneBottom.style.border = 'solid 1px #ff6d51';
   };
-  var onDropAreaDrop = function (evt) {
+  var onDropAreaBottomDrop = function (evt) {
     evt.preventDefault();
-    dropZone.style.border = dropZoneStyle;
+    dropZoneBottom.style.border = dropZoneBottomStyle;
     onPhotoInputChange(evt.dataTransfer.files);
   };
 
-  var onDropAreaHeaderLeave = function (evt) {
+  var onDropAreaTopDragLeave = function (evt) {
     evt.preventDefault();
-    dropZoneHeader.style.border = dropZoneHeaderStyle;
+    dropZoneTop.style.border = dropZoneTopStyle;
   };
-  var onDropAreaHeaderDragOver = function (evt) {
+  var onDropAreaTopDragOver = function (evt) {
     evt.preventDefault();
-    dropZoneHeader.style.border = 'solid 1px #ff6d51';
+    dropZoneTop.style.border = 'solid 1px #ff6d51';
   };
-  var onDropAreaHeaderDrop = function (evt) {
+  var onDropAreaTopDrop = function (evt) {
     evt.preventDefault();
-    dropZoneHeader.style.border = dropZoneHeaderStyle;
+    dropZoneTop.style.border = dropZoneTopStyle;
     onAvatarInputChange(evt.dataTransfer.files);
   };
 
@@ -71,14 +71,14 @@
       }
     }
 
-    dropAreaHeader.removeEventListener('dragenter', onDragEnter);
-    dropAreaHeader.removeEventListener('dragleave', onDropAreaHeaderLeave);
-    dropAreaHeader.removeEventListener('dragover', onDropAreaHeaderDragOver);
-    dropAreaHeader.removeEventListener('drop', onDropAreaHeaderDrop);
-    dropArea.removeEventListener('dragenter', onDragEnter);
-    dropArea.removeEventListener('dragleave', onDragLeave);
-    dropArea.removeEventListener('dragover', onDragOver);
-    dropArea.removeEventListener('drop', onDropAreaDrop);
+    dropAreaTop.removeEventListener('dragenter', onDropAreaTopDragEnter);
+    dropAreaTop.removeEventListener('dragleave', onDropAreaTopDragLeave);
+    dropAreaTop.removeEventListener('dragover', onDropAreaTopDragOver);
+    dropAreaTop.removeEventListener('drop', onDropAreaTopDrop);
+    dropAreaBottom.removeEventListener('dragenter', onDropAreaTopDragEnter);
+    dropAreaBottom.removeEventListener('dragleave', onDropAreaBottomDragLeave);
+    dropAreaBottom.removeEventListener('dragover', onDropAreaBottomDragOver);
+    dropAreaBottom.removeEventListener('drop', onDropAreaBottomDrop);
     avatarInput.removeEventListener('change', onAvatarInputChange);
     photoInput.removeEventListener('change', onPhotoInputChange);
   };
@@ -179,15 +179,15 @@
   };
 
   var fileUploadHandlers = function () {
-    dropAreaHeader.addEventListener('dragenter', onDragEnter);
-    dropAreaHeader.addEventListener('dragleave', onDropAreaHeaderLeave);
-    dropAreaHeader.addEventListener('dragover', onDropAreaHeaderDragOver);
-    dropAreaHeader.addEventListener('drop', onDropAreaHeaderDrop);
+    dropAreaTop.addEventListener('dragenter', onDropAreaTopDragEnter);
+    dropAreaTop.addEventListener('dragleave', onDropAreaTopDragLeave);
+    dropAreaTop.addEventListener('dragover', onDropAreaTopDragOver);
+    dropAreaTop.addEventListener('drop', onDropAreaTopDrop);
 
-    dropArea.addEventListener('dragenter', onDragEnter);
-    dropArea.addEventListener('dragleave', onDragLeave);
-    dropArea.addEventListener('dragover', onDragOver);
-    dropArea.addEventListener('drop', onDropAreaDrop);
+    dropAreaBottom.addEventListener('dragenter', onDropAreaTopDragEnter);
+    dropAreaBottom.addEventListener('dragleave', onDropAreaBottomDragLeave);
+    dropAreaBottom.addEventListener('dragover', onDropAreaBottomDragOver);
+    dropAreaBottom.addEventListener('drop', onDropAreaBottomDrop);
 
     avatarInput.addEventListener('change', onAvatarInputChange);
     photoInput.addEventListener('change', onPhotoInputChange);

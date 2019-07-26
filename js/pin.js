@@ -24,19 +24,17 @@
     };
   };
 
-  var onPinButtonClick = function (data) {
-    window.card.render(data);
-  };
-
   var loadPin = function (object) {
     var clone = pinTemplate.cloneNode(true);
     clone.style.left = (object.location.x - Pin.WIDTH) + 'px';
     clone.style.top = (object.location.y - Pin.HEIGHT) + 'px';
     clone.firstElementChild.src = object.author.avatar;
     clone.firstElementChild.alt = object.offer.title;
-    clone.addEventListener('click', function () {
-      onPinButtonClick(object);
-    });
+    var onPinButtonClick = function () {
+      window.card.render(object);
+      clone.classList.add('map__pin--active');
+    };
+    clone.addEventListener('click', onPinButtonClick);
 
     return clone;
   };
@@ -66,7 +64,6 @@
 
   window.pin = {
     render: debounce(renderPins),
-    renderPins: renderPins,
     remove: removePins
   };
 })();

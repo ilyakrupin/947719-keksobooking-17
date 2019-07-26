@@ -2,20 +2,23 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var defaultAvatar;
+
+  var avatarDefault;
   var avatarInput = window.global.FORM.querySelector('#avatar');
   var avatarContainer = window.global.FORM.querySelector('.ad-form-header__preview');
   var avatarImage = window.global.FORM.querySelector('.ad-form-header__preview > img');
-  var defaultPhoto;
+
+  var photoDefault;
   var photoInput = window.global.FORM.querySelector('#images');
-  var photoContainer = window.global.FORM.querySelector('.ad-form__photo');
-  var newPhotoContainer;
-  var galleryContainer = document.querySelector('.ad-form__photo-container');
-  var sourceElement;
+  var photoBlock = window.global.FORM.querySelector('.ad-form__photo');
+  var photoBlockClone;
+  var photoContainer = window.global.FORM.querySelector('.ad-form__photo-container');
+  var photoSource;
 
   var dropAreaTop = window.global.FORM.querySelector('.ad-form__field');
   var dropZoneTop = dropAreaTop.querySelector('.ad-form-header__drop-zone');
   var dropZoneTopStyle = dropZoneTop.style.border;
+
   var dropAreaBottom = window.global.FORM.querySelector('.ad-form__upload');
   var dropZoneBottom = dropAreaBottom.querySelector('.ad-form__drop-zone');
   var dropZoneBottomStyle = dropZoneBottom.style.border;
@@ -52,20 +55,20 @@
   };
 
   var resetFile = function () {
-    if (defaultAvatar) {
+    if (avatarDefault) {
       avatarImage.remove();
       avatarContainer.style.padding = '0 15px';
-      avatarContainer.appendChild(defaultAvatar);
+      avatarContainer.appendChild(avatarDefault);
     }
 
-    if (newPhotoContainer) {
-      var galleryChildren = galleryContainer.querySelectorAll('.ad-form__photo');
+    if (photoBlockClone) {
+      var galleryChildren = photoContainer.querySelectorAll('.ad-form__photo');
       [].forEach.call(galleryChildren, function (element) {
         element.remove();
       });
-      if (defaultPhoto) {
-        galleryContainer.appendChild(defaultPhoto);
-        defaultPhoto = null;
+      if (photoDefault) {
+        photoContainer.appendChild(photoDefault);
+        photoDefault = null;
       }
     }
 
@@ -82,18 +85,18 @@
   };
 
   var onImageDragStart = function (evt) {
-    sourceElement = evt.target;
+    photoSource = evt.target;
     evt.dataTransfer.effectAllowed = 'move';
-    evt.dataTransfer.setData('src', sourceElement.src);
+    evt.dataTransfer.setData('src', photoSource.src);
   };
   var onImageDragOver = function (evt) {
     evt.preventDefault();
   };
   var onImageDrop = function (evt) {
-    var targetElement = evt.target;
-    if (sourceElement !== targetElement) {
-      sourceElement.src = targetElement.src;
-      targetElement.src = evt.dataTransfer.getData('src');
+    var photoTarget = evt.target;
+    if (photoSource !== photoTarget) {
+      photoSource.src = photoTarget.src;
+      photoTarget.src = evt.dataTransfer.getData('src');
     }
   };
 
@@ -129,10 +132,10 @@
     var match = getFilesData(avatarInput.files) || getFilesData(arguments[0]);
     avatarInput.value = null;
     if (match) {
-      if (!defaultAvatar) {
-        defaultAvatar = avatarContainer.removeChild(avatarImage);
+      if (!avatarDefault) {
+        avatarDefault = avatarContainer.removeChild(avatarImage);
       } else {
-        defaultAvatar.remove();
+        avatarDefault.remove();
       }
       avatarContainer.style.padding = '0';
       avatarImage.remove();
@@ -164,16 +167,16 @@
     photoInput.value = null;
     var fragment = document.createDocumentFragment();
     if (matches) {
-      if (!defaultPhoto) {
-        defaultPhoto = galleryContainer.removeChild(photoContainer);
+      if (!photoDefault) {
+        photoDefault = photoContainer.removeChild(photoBlock);
       }
       matches.forEach(function (file) {
-        newPhotoContainer = photoContainer.cloneNode();
-        newPhotoContainer.appendChild(getPhoto(file));
-        fragment.appendChild(newPhotoContainer);
+        photoBlockClone = photoBlock.cloneNode();
+        photoBlockClone.appendChild(getPhoto(file));
+        fragment.appendChild(photoBlockClone);
       });
     }
-    galleryContainer.appendChild(fragment);
+    photoContainer.appendChild(fragment);
   };
 
   var fileUploadHandlers = function () {
@@ -195,5 +198,4 @@
     activate: fileUploadHandlers,
     reset: resetFile
   };
-
 })();

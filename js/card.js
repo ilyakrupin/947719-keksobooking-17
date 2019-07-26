@@ -32,6 +32,10 @@
 
   var removeCard = function () {
     var popup = window.global.MAP.querySelector('.popup');
+    var pinActive = window.global.MAP.querySelector('.map__pin--active');
+    if (pinActive) {
+      pinActive.classList.remove('map__pin--active');
+    }
     if (popup) {
       window.global.MAP.removeChild(popup);
     }

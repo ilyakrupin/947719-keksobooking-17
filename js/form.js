@@ -70,6 +70,7 @@
       item.selected = false;
       item.disabled = false;
     });
+    inputPrice.min = inputPrice.placeholder = TYPES['flat'];
     window.global.FORM.reset();
   };
 

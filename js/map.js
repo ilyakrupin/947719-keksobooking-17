@@ -114,7 +114,7 @@
 
   var onSuccess = function (data) {
     pins = data.slice();
-    window.pin.renderPins(pins);
+    window.pin.render(pins);
   };
 
   var getData = function () {

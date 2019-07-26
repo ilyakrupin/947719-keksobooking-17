@@ -1,14 +1,14 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
-  var mainPinButton = map.querySelector('.map__pin--main');
+  var mainPinButton = window.global.MAP.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
   var pointsA = {};
   var MapLimit = {
     TOP: 130,
     BOTTOM: 630,
   };
+
   var MainPin = {
     WIDTH: 32,
     HEIGHT: 82,
@@ -19,7 +19,7 @@
 
   var MainPinLimit = {
     left: -MainPin.WIDTH,
-    right: map.offsetWidth - MainPin.WIDTH,
+    right: window.global.MAP.offsetWidth - MainPin.WIDTH,
     top: MapLimit.TOP - MainPin.HEIGHT,
     bottom: MapLimit.BOTTOM - MainPin.HEIGHT
   };
@@ -41,11 +41,11 @@
     }
   };
 
-  var initialPinAddress = function () {
+  var findDefaultPinAddress = function () {
     formAddress.value = MainPin.initialCoords;
   };
 
-  var initialPinCoords = function () {
+  var findDefaultPinCoords = function () {
     mainPinButton.style.left = MainPin.x + 'px'; mainPinButton.style.top = MainPin.y + 'px';
   };
 
@@ -92,7 +92,7 @@
   };
 
   var onDocumentMouseUp = function () {
-    if (window.map.wrap.classList.contains('map--faded')) {
+    if (window.global.MAP.classList.contains('map--faded')) {
       window.switch.on();
       window.pin.show();
       window.file.activate();
@@ -104,8 +104,7 @@
   mainPinButton.addEventListener('mousedown', onMainPinMouseDown);
 
   window.map = {
-    wrap: map,
-    initialPinAddress: initialPinAddress,
-    initialPinCoords: initialPinCoords
+    findDefaultPinAddress: findDefaultPinAddress,
+    findDefaultPinCoords: findDefaultPinCoords
   };
 })();

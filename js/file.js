@@ -1,24 +1,22 @@
 'use strict';
 
 (function () {
-
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var form = document.querySelector('.ad-form');
   var defaultAvatar;
-  var avatarInput = form.querySelector('#avatar');
-  var avatarContainer = form.querySelector('.ad-form-header__preview');
-  var avatarImage = form.querySelector('.ad-form-header__preview > img');
+  var avatarInput = window.global.FORM.querySelector('#avatar');
+  var avatarContainer = window.global.FORM.querySelector('.ad-form-header__preview');
+  var avatarImage = window.global.FORM.querySelector('.ad-form-header__preview > img');
   var defaultPhoto;
-  var photoInput = form.querySelector('#images');
-  var photoContainer = form.querySelector('.ad-form__photo');
+  var photoInput = window.global.FORM.querySelector('#images');
+  var photoContainer = window.global.FORM.querySelector('.ad-form__photo');
   var newPhotoContainer;
   var galleryContainer = document.querySelector('.ad-form__photo-container');
   var sourceElement;
 
-  var dropAreaTop = form.querySelector('.ad-form__field');
+  var dropAreaTop = window.global.FORM.querySelector('.ad-form__field');
   var dropZoneTop = dropAreaTop.querySelector('.ad-form-header__drop-zone');
   var dropZoneTopStyle = dropZoneTop.style.border;
-  var dropAreaBottom = form.querySelector('.ad-form__upload');
+  var dropAreaBottom = window.global.FORM.querySelector('.ad-form__upload');
   var dropZoneBottom = dropAreaBottom.querySelector('.ad-form__drop-zone');
   var dropZoneBottomStyle = dropZoneBottom.style.border;
 

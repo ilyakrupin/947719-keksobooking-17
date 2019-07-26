@@ -2,28 +2,27 @@
 
 (function () {
   var mapFaded = document.querySelector('.map--faded');
-  var adForm = document.querySelector('.ad-form');
-  var filters = document.querySelector('.map__filters');
-  var filterList = filters.children;
-  var adList = adForm.children;
+  var mapFilters = window.global.MAP.querySelector('.map__filters');
+  var filterList = mapFilters.children;
+  var formList = window.global.FORM.children;
 
   var toggleTag = function (status) {
     [].forEach.call(filterList, function (element) {
       element.disabled = status;
     });
-    [].forEach.call(adList, function (element) {
+    [].forEach.call(formList, function (element) {
       element.disabled = status;
     });
   };
 
   var toggleFadeOut = function () {
     mapFaded.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
+    window.global.FORM.classList.remove('ad-form--disabled');
   };
 
   var toggleFadeIn = function () {
     mapFaded.classList.add('map--faded');
-    adForm.classList.add('ad-form--disabled');
+    window.global.FORM.classList.add('ad-form--disabled');
   };
 
   var activateForm = function () {

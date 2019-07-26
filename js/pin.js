@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-  var ESC = 27;
   var PIN_COUNT = 5;
   var DEBOUNCE_INTERVAL = 500;
   var Pin = {
     WIDTH: 25,
     HEIGHT: 70
   };
+
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var pins = [];
@@ -36,7 +36,6 @@
     clone.style.top = (object.location.y - Pin.HEIGHT) + 'px';
     clone.firstElementChild.src = object.author.avatar;
     clone.firstElementChild.alt = object.offer.title;
-
     clone.addEventListener('click', function () {
       onPinButtonClick(object);
     });
@@ -62,15 +61,15 @@
       }
     });
 
-    window.map.wrap.appendChild(fragment);
+    window.global.MAP.appendChild(fragment);
   };
 
   var removePins = function () {
-    var oldPins = window.map.wrap.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var oldPins = window.global.MAP.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     if (oldPins) {
       oldPins.forEach(function (item) {
-        window.window.map.wrap.removeChild(item);
+        window.global.MAP.removeChild(item);
       });
     }
   };
@@ -89,7 +88,7 @@
     });
 
     document.addEventListener('keyup', function (evt) {
-      if (evt.keyCode === ESC) {
+      if (evt.keyCode === window.global.ESC) {
         errorMessage.remove();
       }
     });
@@ -103,5 +102,4 @@
     show: showPins,
     remove: removePins
   };
-
 })();

@@ -3,6 +3,9 @@
 (function () {
   var mainPinButton = window.global.MAP.querySelector('.map__pin--main');
   var formAddress = document.querySelector('input[name="address"]');
+  var main = document.querySelector('main');
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var pins = [];
   var pointsA = {};
   var MapLimit = {
     TOP: 130,
@@ -91,11 +94,37 @@
     getPinCoords();
   };
 
+  var onError = function (message) {
+    var errorMessage = errorTemplate.cloneNode(true);
+    errorMessage.firstElementChild.textContent = message;
+    main.appendChild(errorMessage);
+
+    main.addEventListener('mouseup', function () {
+      errorMessage.remove();
+    });
+
+    document.addEventListener('keyup', function (evt) {
+      if (evt.keyCode === window.global.ESC) {
+        errorMessage.remove();
+      }
+    });
+
+    window.form.deactivateMap();
+  };
+
+  var onSuccess = function (data) {
+    pins = data.slice();
+    window.pin.renderPins(pins);
+  };
+
+  var getData = function () {
+    return pins;
+  };
+
   var onDocumentMouseUp = function () {
     if (window.global.MAP.classList.contains('map--faded')) {
-      window.switch.on();
-      window.pin.show();
-      window.file.activate();
+      window.backend.dbquery(onSuccess, onError);
+      window.form.activateMap();
     }
     document.removeEventListener('mousemove', onDocumentMouseMove);
     document.removeEventListener('mouseup', onDocumentMouseUp);
@@ -104,6 +133,7 @@
   mainPinButton.addEventListener('mousedown', onMainPinMouseDown);
 
   window.map = {
+    getData: getData,
     findDefaultPinAddress: findDefaultPinAddress,
     findDefaultPinCoords: findDefaultPinCoords
   };

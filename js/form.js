@@ -93,6 +93,11 @@
     window.map.findDefaultPinCoords();
   };
 
+  var activateMap = function () {
+    window.switch.on();
+    window.file.activate();
+  };
+
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     deactivateMap();
@@ -126,4 +131,9 @@
     window.backend.dbquery(successHandler, errorHandler, new FormData(window.global.FORM));
     deactivateMap();
   });
+
+  window.form = {
+    activateMap: activateMap,
+    deactivateMap: deactivateMap
+  };
 })();

@@ -9,8 +9,6 @@
   };
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-  var pins = [];
 
   var debounce = function (cb) {
     var lastTimeout = null;
@@ -43,14 +41,6 @@
     return clone;
   };
 
-  var onSuccess = function (data) {
-    pins = data.slice();
-  };
-
-  var getData = function () {
-    return pins;
-  };
-
   var renderPins = function (object) {
     removePins();
     var fragment = document.createDocumentFragment();
@@ -74,32 +64,9 @@
     }
   };
 
-  var showPins = function () {
-    renderPins(pins);
-  };
-
-  var onError = function (message) {
-    var errorMessage = errorTemplate.cloneNode(true);
-    errorMessage.firstElementChild.textContent = message;
-    Error.container.appendChild(errorMessage);
-
-    Error.container.addEventListener('mouseup', function () {
-      errorMessage.remove();
-    });
-
-    document.addEventListener('keyup', function (evt) {
-      if (evt.keyCode === window.global.ESC) {
-        errorMessage.remove();
-      }
-    });
-  };
-
-  window.backend.dbquery(onSuccess, onError);
-
   window.pin = {
-    data: getData,
     render: debounce(renderPins),
-    show: showPins,
+    renderPins: renderPins,
     remove: removePins
   };
 })();

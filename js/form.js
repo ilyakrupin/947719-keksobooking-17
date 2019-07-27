@@ -2,20 +2,19 @@
 
 (function () {
   var main = document.querySelector('main');
-  var adForm = document.querySelector('.ad-form');
-  var selectType = adForm.querySelector('#type');
-  var inputPrice = adForm.querySelector('#price');
-  var selectRooms = adForm.querySelector('#room_number');
-  var selectCapacity = adForm.querySelector('#capacity');
-  var selectTimeIn = adForm.querySelector('#timein');
-  var selectTimeOut = adForm.querySelector('#timeout');
-  var resetButton = adForm.querySelector('.ad-form__reset');
+  var selectType = window.global.FORM.querySelector('#type');
+  var inputPrice = window.global.FORM.querySelector('#price');
+  var selectRooms = window.global.FORM.querySelector('#room_number');
+  var selectCapacity = window.global.FORM.querySelector('#capacity');
+  var selectTimeIn = window.global.FORM.querySelector('#timein');
+  var selectTimeOut = window.global.FORM.querySelector('#timeout');
+  var resetButton = window.global.FORM.querySelector('.ad-form__reset');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var successMessage = successTemplate.cloneNode(true);
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorMessage = errorTemplate.cloneNode(true);
   var errorButton = errorTemplate.querySelector('.error__button');
-  var ESC = 27;
+
   var TYPES = {
     'bungalo': 0,
     'flat': 1000,
@@ -26,7 +25,10 @@
     '1': ['1'],
     '2': ['2', '1'],
     '3': ['3', '2', '1'],
-    '100': ['0']
+    '100': ['0'],
+    'MIN': '1',
+    'MAX': '100',
+    'VIP': '0'
   };
 
   selectType.addEventListener('change', function () {
@@ -51,15 +53,29 @@
   };
 
   var onCapacityChange = function () {
-    if (selectCapacity.value > selectRooms.value && selectCapacity.value !== '0') {
-      selectRooms.value = selectCapacity.value;
-    } else if (selectCapacity.value === '0') {
-      selectRooms.value = '100';
+    switch (true) {
+      case (selectCapacity.value > selectRooms.value && selectCapacity.value !== ROOMS['VIP']):
+        selectRooms.value = selectCapacity.value;
+        break;
+      case (selectCapacity.value === ROOMS['VIP']):
+        selectRooms.value = ROOMS['MAX'];
+        break;
+      case (selectCapacity.value === ROOMS['MIN'] && selectRooms.value === ROOMS['MAX']):
+        selectRooms.value = ROOMS['MIN'];
     }
   };
 
+  var resetForm = function () {
+    [].forEach.call(selectCapacity.options, function (item) {
+      item.selected = false;
+      item.disabled = false;
+    });
+    inputPrice.min = inputPrice.placeholder = TYPES['flat'];
+    window.global.FORM.reset();
+  };
+
   var removeErrorMessage = function (evt) {
-    if (evt.type === 'click' || evt.keyCode === ESC) {
+    if (evt.type === 'click' || evt.keyCode === window.global.ESC) {
       main.removeChild(errorMessage);
       document.removeEventListener('keydown', removeErrorMessage);
       errorButton.removeEventListener('click', removeErrorMessage);
@@ -68,14 +84,19 @@
   };
 
   var deactivateMap = function () {
-    adForm.reset();
-    window.resetFile();
+    resetForm();
     window.filter.reset();
     window.pin.remove();
     window.card.remove();
     window.switch.off();
-    window.map.initialPinAddress();
-    window.map.initialPinCoords();
+    window.file.reset();
+    window.map.findDefaultPinAddress();
+    window.map.findDefaultPinCoords();
+  };
+
+  var activateMap = function () {
+    window.switch.on();
+    window.file.activate();
   };
 
   resetButton.addEventListener('click', function (evt) {
@@ -84,7 +105,7 @@
   });
 
   var removeSuccessMessage = function (evt) {
-    if (evt.type === 'click' || evt.keyCode === ESC) {
+    if (evt.type === 'click' || evt.keyCode === window.global.ESC) {
       main.removeChild(successMessage);
       document.removeEventListener('keydown', removeSuccessMessage);
       document.removeEventListener('click', removeSuccessMessage);
@@ -106,9 +127,14 @@
 
   selectCapacity.addEventListener('change', onCapacityChange);
   selectRooms.addEventListener('change', onRoomsChange);
-  adForm.addEventListener('submit', function (evt) {
+  window.global.FORM.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.dbquery(successHandler, errorHandler, new FormData(adForm));
+    window.backend.dbquery(successHandler, errorHandler, new FormData(window.global.FORM));
     deactivateMap();
   });
+
+  window.form = {
+    activateMap: activateMap,
+    deactivateMap: deactivateMap
+  };
 })();

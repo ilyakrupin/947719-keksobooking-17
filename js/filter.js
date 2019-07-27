@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var formFilters = document.querySelector('.map__filters');
+  var formFilters = window.global.MAP.querySelector('.map__filters');
   var priceMap = {
     'low': {
       start: 0,
@@ -54,9 +54,9 @@
 
   var onFormFiltersChange = function () {
     var filterElements = [];
-    filterElements = Array.from(document.querySelector('.map__filters').children);
+    filterElements = Array.from(formFilters.children);
     window.card.remove();
-    window.pin.render(getFilterData(window.pin.data(), filterElements));
+    window.pin.render(getFilterData(window.map.getData(), filterElements));
   };
 
   formFilters.addEventListener('change', onFormFiltersChange);

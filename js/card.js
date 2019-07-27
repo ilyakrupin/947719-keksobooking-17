@@ -2,7 +2,6 @@
 
 (function () {
   var template = document.querySelector('#card').content.querySelector('.map__card');
-  var ESC = 27;
   var Property = {
     palace: 'Дворец',
     flat: 'Квартира',
@@ -12,7 +11,6 @@
 
   var getWordEndings = function (number, nominative, genitiveSingular, genitivePlural) {
     number %= 100;
-
     if (number > 14) {
       number %= 10;
     }
@@ -33,15 +31,19 @@
   };
 
   var removeCard = function () {
-    var popup = window.map.wrap.querySelector('.popup');
+    var popup = window.global.MAP.querySelector('.popup');
+    var pinActive = window.global.MAP.querySelector('.map__pin--active');
+    if (pinActive) {
+      pinActive.classList.remove('map__pin--active');
+    }
     if (popup) {
-      window.map.wrap.removeChild(popup);
+      window.global.MAP.removeChild(popup);
     }
   };
 
   var renderCard = function (data) {
     removeCard();
-    window.map.wrap.appendChild(getCard(data));
+    window.global.MAP.appendChild(getCard(data));
   };
 
   var getCard = function (object) {
@@ -95,7 +97,7 @@
   };
 
   document.addEventListener('keyup', function (evt) {
-    if (evt.keyCode === ESC) {
+    if (evt.keyCode === window.global.ESC) {
       removeCard();
     }
   });

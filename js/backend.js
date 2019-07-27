@@ -5,12 +5,15 @@
     DOWNLOAD: 'https://js.dump.academy/keksobooking/data',
     UPLOAD: 'https://js.dump.academy/keksobooking'
   };
+  var JSON_TYPE = 'json';
+  var MAX_RESPONSE_TIME = 5000;
   var HTTP_OK = 200;
 
   var connect = function (onSuccess, onError, data) {
 
     var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
+    xhr.responseType = JSON_TYPE;
+    xhr.timeout = MAX_RESPONSE_TIME;
 
     xhr.addEventListener('load', function () {
       if (xhr.status === HTTP_OK) {
@@ -21,11 +24,11 @@
     });
 
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError('Ошибка загрузки данных');
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      onError('Данные загрузить не удалось');
     });
 
     if (data) {
